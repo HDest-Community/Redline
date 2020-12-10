@@ -95,6 +95,10 @@ class HDRedline : HDCellWeapon
 
 	protected clearscope int GetRealBatteryCharge()
 	{
+		if (WeaponStatus[RDProp_Battery] == -1)
+		{
+			return -1;
+		}
 		return int(ceil(WeaponStatus[RDProp_Battery] / 2.0));
 	}
 
