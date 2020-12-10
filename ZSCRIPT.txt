@@ -75,12 +75,6 @@ class HDRedline : HDCellWeapon
 		WeaponStatus[RDProp_Battery] = 40;
 	}
 
-	override void Consolidate()
-	{
-		CheckBFGCharge(RDProp_Battery);
-		CheckBFGCharge(RDProp_Charge);
-	}
-
 	override string GetHelpText()
 	{
 		return WEPHELP_FIRE.."  Shoot\n"
