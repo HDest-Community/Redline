@@ -161,8 +161,8 @@ class HDRedline : HDCellWeapon
 		Weapon.SelectionOrder 300;
 		Weapon.SlotNumber 6;
 		Weapon.SlotPriority 1.5;
-		HDWeapon.BarrelSize 40, 1.5, 2;
-		Scale 0.8;
+		HDWeapon.BarrelSize 35, 1.5, 2;
+		Scale 0.6;
 		Tag "RDL-N3 'Redline' Thermal Lance";
 		HDWeapon.Refid "rdl";
 	}
