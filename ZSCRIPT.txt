@@ -47,7 +47,7 @@ class HDRedline : HDCellWeapon
 		RDProp_LoadType
 	}
 
-	override bool AddSpareWeapon(actor newowner) {return AddSpareWeaponRegular(newowner);}
+	override bool AddSpareWeapon(actor newowner) { return AddSpareWeaponRegular(newowner); }
 	override HDWeapon GetSpareWeapon(actor newowner , bool reverse, bool doselect) { return GetSpareWeaponRegular(newowner, reverse, doselect); }
 	override double GunMass() { return WeaponStatus[RDProp_Battery] >= 0 ? 12 : 11; }
 	override double WeaponBulk() { return 122 + (WeaponStatus[RDProp_Battery] >= 0 ? ENC_BATTERY_LOADED : 0); }
@@ -181,7 +181,7 @@ class HDRedline : HDCellWeapon
 			RDSG A 0 A_JumpIf(invoker.WeaponStatus[RDProp_Flags] & RDF_Scope, 2);
 			RDNG A 0;
 			#### A 0;
-			Goto Select0BFG;
+			Goto Select0Big;
 		Deselect0:
 			RDSG A 0 A_JumpIf(invoker.WeaponStatus[RDProp_Flags] & RDF_Scope, 2);
 			RDNG A 0;
