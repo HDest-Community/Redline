@@ -1,0 +1,11 @@
+Code:
+- Accensus
+
+Sprites:
+- tan da (https://www.artstation.com/artwork/oAJ9lz)
+ + Pickup sprite and reshade by Mor'ladim.
+
+Sounds:
+- Fallout (Interplay/Bethesda)
+ + https://gamebanana.com/sounds/35140
+ + https://gamebanana.com/sounds/33348

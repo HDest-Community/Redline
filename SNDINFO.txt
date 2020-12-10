@@ -1,0 +1,10 @@
+Redline/Fire RDLNFIRE
+Redline/Impact RDLNHIT
+$limit Redline/Impact 0
+
+Redline/BoltBack RDBOLTBK
+Redline/BoltFwd RDBOLTFW
+Redline/Charge RDBOLTCH
+Redline/CellIn RDCLLIN
+Redline/CellOut RDCLLOUT
+Redline/Eject RDEJECT
