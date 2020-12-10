@@ -175,6 +175,8 @@ class HDRedline : HDCellWeapon
 			#### Z -1;
 			Stop;
 		Ready:
+			RDSG A 0 A_JumpIf(invoker.WeaponStatus[RDProp_Flags] & RDF_Scope, 2);
+			RDNG A 0;
 			#### A 1 A_WeaponReady(WRF_ALL);
 			Goto ReadyEnd;
 		Select0:
