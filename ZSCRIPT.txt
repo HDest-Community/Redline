@@ -79,7 +79,8 @@ class HDRedline : HDCellWeapon
 	{
 		return WEPHELP_FIRE.."  Shoot\n"
 		..WEPHELP_ALTFIRE.."  Work the bolt\n"
-		..WEPHELP_ALTFIRE.." (hold)+"..WEPHELP_RELOAD.."  Load/Unload battery";
+		..WEPHELP_ALTFIRE.." (hold)+"..WEPHELP_RELOAD.."  Load/Unload battery"
+		..WEPHELP_ALTFIRE.." (hold)+"..WEPHELP_UNLOAD.."  Unload battery";
 	}
 
 	override string PickupMessage()
@@ -252,18 +253,15 @@ class HDRedline : HDCellWeapon
 			#### E 1
 			{
 				A_ClearRefire();
-				if (PressingReload())
+				if ((PressingReload() || PressingUnload()) && invoker.WeaponStatus[RDProp_Battery] >= 0)
 				{
-					if (invoker.WeaponStatus[RDProp_Battery] >= 0)
-					{
-						invoker.WeaponStatus[RDProp_LoadType] = 0;
-						return ResolveState("LoadChamber");
-					}
-					else if (CheckInventory("HDBattery", 1))
-					{
-						invoker.WeaponStatus[RDProp_LoadType] = 1;
-						return ResolveState("LoadChamber");
-					}
+					invoker.WeaponStatus[RDProp_LoadType] = 0; // [Ace] unload.
+					return ResolveState("LoadChamber");
+				}
+				else if (PressingReload() && CheckInventory("HDBattery", 1))
+				{
+					invoker.WeaponStatus[RDProp_LoadType] = 1;
+					return ResolveState("LoadChamber");
 				}
 
 				if (PressingAltFire())
