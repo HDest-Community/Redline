@@ -6,3 +6,4 @@
 	- `scope`: Self-explanatory.
 	- `custombolt`: Custom bolt for working the bolt faster.
 	- `cap`: Capacitor for landing an extra shot.
+	- `resonator`: Amplifies damage based on number of charges.

@@ -36,7 +36,8 @@ class HDRedline : HDCellWeapon
 	{
 		RDF_CustomBolt = 1,
 		RDF_Capacitor = 2,
-		RDF_Scope = 4
+		RDF_Scope = 4,
+		RDF_Resonator = 8
 	}
 
 	enum RedlineProperties
@@ -76,6 +77,10 @@ class HDRedline : HDCellWeapon
 		{
 			WeaponStatus[RDProp_Flags] |= RDF_Scope;
 		}
+		if (GetLoadoutVar(input, "resonator", 1) > 0)
+		{
+			WeaponStatus[RDProp_Flags] |= RDF_Resonator;
+		}
 
 		InitializeWepStats(false);
 	}
@@ -91,7 +96,8 @@ class HDRedline : HDCellWeapon
 	override string PickupMessage()
 	{
 		string CapStr = WeaponStatus[RDProp_Flags] & RDF_Capacitor ? "high-capacity " : "";
-		return String.Format("You got the RDL-N3 %s'Redline' bolt-action thermal lance.", CapStr);
+		string ResStr = WeaponStatus[RDProp_Flags] & RDF_Resonator ? "resonating " : "";
+		return String.Format("You got the %s%sRDL-N3 'Redline' bolt-action thermal lance.", ResStr, CapStr);
 	}
 
 	protected clearscope int GetMaxCharge()
@@ -213,7 +219,15 @@ class HDRedline : HDCellWeapon
 			{
 				A_Light0();
 				A_StartSound("Redline/Fire", CHAN_WEAPON);
-				A_RailAttack(random(100, 150), 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 4.0, 0, "RedlineRaySmoke");
+
+				int Charges = invoker.WeaponStatus[RDProp_Charge];
+				int DamageDealt = random(100, 150);
+				if (invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator && Charges > 1)
+				{
+					DamageDealt = int(DamageDealt ** (1.0 + 0.02 * (Charges - 1)));
+				}
+				A_RailAttack(DamageDealt, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 4.0, 0, "RedlineRaySmoke");
+				
 				A_AlertMonsters();
 				A_MuzzleClimb(0, 0, -0.2, -0.8, -frandom(0.5, 0.9), -frandom(0.5, 0.9), -frandom(0.5, 0.9), -frandom(0.5, 0.9));
 				invoker.WeaponStatus[RDProp_Charge] -= 1;
@@ -377,6 +391,10 @@ class RedlineRandom : IdleDummy
 				if (!random(0, 3))
 				{
 					wpn.WeaponStatus[wpn.RDProp_Flags] |= wpn.RDF_Scope;
+				}
+				if (!random(0, 3))
+				{
+					wpn.WeaponStatus[wpn.RDProp_Flags] |= wpn.RDF_Resonator;
 				}
 			}
 			Stop;
