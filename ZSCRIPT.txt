@@ -84,7 +84,7 @@ class HDRedline : HDCellWeapon
 	{
 		return WEPHELP_FIRE.."  Shoot\n"
 		..WEPHELP_ALTFIRE.."  Work the bolt\n"
-		..WEPHELP_ALTFIRE.." (hold)+"..WEPHELP_RELOAD.."  Load/Unload battery"
+		..WEPHELP_ALTFIRE.." (hold)+"..WEPHELP_RELOAD.."  Load/Unload battery\n"
 		..WEPHELP_ALTFIRE.." (hold)+"..WEPHELP_UNLOAD.."  Unload battery";
 	}
 
