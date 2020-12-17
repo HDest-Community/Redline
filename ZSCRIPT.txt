@@ -221,10 +221,10 @@ class HDRedline : HDCellWeapon
 				A_StartSound("Redline/Fire", CHAN_WEAPON);
 
 				int Charges = invoker.WeaponStatus[RDProp_Charge];
-				int DamageDealt = random(100, 150);
+				int DamageDealt = random(90, 120);
 				if (invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator && Charges > 1)
 				{
-					DamageDealt = int(DamageDealt ** (1.0 + 0.02 * (Charges - 1)));
+					DamageDealt = int(DamageDealt ** (1.0 + 0.06 * (Charges - 1)));
 				}
 				A_RailAttack(DamageDealt, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 4.0, 0, "RedlineRaySmoke");
 				
