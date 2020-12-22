@@ -396,6 +396,8 @@ class RedlineRandom : IdleDummy
 				{
 					wpn.WeaponStatus[wpn.RDProp_Flags] |= wpn.RDF_Resonator;
 				}
+
+				wpn.InitializeWepStats(false);
 			}
 			Stop;
 	}
@@ -405,6 +407,7 @@ class RedlineRayImpact : HDActor
 {
 	Default
 	{
+		+NODAMAGETHRUST
 		+FORCEDECAL
 		+PUFFGETSOWNER
 		+ALWAYSPUFF
