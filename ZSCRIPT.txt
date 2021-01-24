@@ -48,6 +48,13 @@ class HDRedline : HDCellWeapon
 		RDProp_LoadType
 	}
 
+	override void PostBeginPlay()
+	{
+		weaponspecial = 1337; // [Ace] UaS sling compatibility.
+
+		Super.PostBeginPlay();
+	}
+
 	override bool AddSpareWeapon(actor newowner) { return AddSpareWeaponRegular(newowner); }
 	override HDWeapon GetSpareWeapon(actor newowner , bool reverse, bool doselect) { return GetSpareWeaponRegular(newowner, reverse, doselect); }
 	override double GunMass() { return WeaponStatus[RDProp_Battery] >= 0 ? 12 : 11; }
