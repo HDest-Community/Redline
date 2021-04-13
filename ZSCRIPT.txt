@@ -109,7 +109,7 @@ class HDRedline : HDCellWeapon
 
 	protected clearscope int GetMaxCharge()
 	{
-		return (WeaponStatus[RDProp_Flags] & RDF_Capacitor ? 4 : 3) + int(AceCore.CheckForItem(owner, "HDFenris"));
+		return (WeaponStatus[RDProp_Flags] & RDF_Capacitor ? 4 : 3) + int(AceCore.CheckForItem(owner, "HDGungnir"));
 	}
 
 	protected clearscope int GetRealBatteryCharge(bool useUpper)
@@ -139,7 +139,7 @@ class HDRedline : HDCellWeapon
 		{
 			sb.DrawString(sb.mAmountFont, "00000", (-16, -14), sb.DI_TEXT_ALIGN_RIGHT | sb.DI_TRANSLATABLE | sb.DI_SCREEN_CENTER_BOTTOM, Font.CR_DARKGRAY);
 		}
-		bool HasFenris = AceCore.CheckForItem(hpl, "HDFenris");
+		bool HasFenris = AceCore.CheckForItem(hpl, "HDGungnir");
 		for (int i = 0; i < hdw.WeaponStatus[RDProp_Charge]; ++i)
 		{
 			int X = HasFenris ? (-20 - 5 * i) : (-21 - 6 * i);
