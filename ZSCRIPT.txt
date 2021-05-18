@@ -198,6 +198,7 @@ class HDRedline : HDCellWeapon
 		{
 			invoker.WeaponStatus[RDProp_Heat] += 70 + 30 * invoker.WeaponStatus[RDProp_Gear];
 			invoker.WeaponStatus[RDProp_Flags] |= RDF_Overheated;
+			A_StartSound("Redline/Overload", 6);
 		}
 	}
 
