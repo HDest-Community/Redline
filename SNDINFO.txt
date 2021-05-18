@@ -8,3 +8,5 @@ Redline/Charge RDBOLTCH
 Redline/CellIn RDCLLIN
 Redline/CellOut RDCLLOUT
 Redline/Eject RDEJECT
+Redline/GearUp RDGEARUP
+Redline/GearDown RDGEARDN
