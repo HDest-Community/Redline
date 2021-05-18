@@ -324,6 +324,12 @@ class HDRedline : HDCellWeapon
 					Mag.A_ChangeVelocity(-0.75, -1.5, 3.5, CVF_RELATIVE);
 					invoker.WeaponStatus[RDProp_Battery] = -1;
 				}
+
+				if (invoker.WeaponStatus[RDProp_Battery] > 0 && invoker.WeaponStatus[RDProp_Charge] < invoker.GetMaxCharge())
+				{
+					invoker.WeaponStatus[RDProp_Rpm] += 400;
+					A_CheckOverheat();
+				}
 			}
 			#### E 2 Offset(6, 42);
 			#### E 1 Offset(6, 42) A_WeaponReady(WRF_NOFIRE);
@@ -408,8 +414,6 @@ class HDRedline : HDCellWeapon
 					A_StartSound("Redline/Charge", 9, pitch: 0.85);
 					invoker.WeaponStatus[RDProp_Battery]--;
 					invoker.WeaponStatus[RDProp_Charge]++;
-					invoker.WeaponStatus[RDProp_Rpm] += 400;
-					A_CheckOverheat();
 				}
 			}
 		BoltPush:
