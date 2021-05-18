@@ -229,7 +229,7 @@ class HDRedline : HDCellWeapon
 			RDNG A 0;
 			#### A 1
 			{
-				if (JustPressed(BT_FIREMODE) && invoker.WeaponStatus[RDProp_Gear] < MaxGear)
+				if (JustPressed(BT_FIREMODE) && invoker.WeaponStatus[RDProp_Gear] < MaxGear && invoker.WeaponStatus[RDProp_Rpm] > MaxRpm / 2.5)
 				{
 					A_StartSound("Redline/GearUp", 5, CHANF_OVERLAP);
 					invoker.WeaponStatus[RDProp_Gear]++;
