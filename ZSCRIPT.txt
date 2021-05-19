@@ -59,11 +59,10 @@ class HDRedline : HDCellWeapon
 	override void Tick()
 	{
 		double Rpm = WeaponStatus[RDProp_Rpm];
-		Rpm -= 2;
-		Rpm *= 0.998;
+		Rpm -= random(6, 9);
 		if (Rpm > MaxRpm * 1.2)
 		{
-			Rpm *= 0.990;
+			Rpm *= 0.98;
 		}
 		WeaponStatus[RDProp_Rpm] = int(max(0, Rpm));
 
@@ -121,22 +120,22 @@ class HDRedline : HDCellWeapon
 			return;
 		}
 
-		// Console.Printf("\c[Green]RPM:\c- %i \c[Green]Damage:\c- %i \c[Green]Gear:\c- %i \c[Green]Heat:\c- %i",
-		// 	WeaponStatus[RDProp_Rpm],
-		// 	A_GetLaserDamage(),
-		// 	WeaponStatus[RDProp_Gear],
-		// 	WeaponStatus[RDProp_Heat]);
+		Console.Printf("\c[Green]RPM:\c- %i \c[Green]Damage:\c- %i \c[Green]Gear:\c- %i \c[Green]Heat:\c- %i",
+			WeaponStatus[RDProp_Rpm],
+			A_GetLaserDamage(),
+			WeaponStatus[RDProp_Gear],
+			WeaponStatus[RDProp_Heat]);
 
 		int btn = owner.player.cmd.buttons;
 		int oldbtn = owner.player.oldbuttons;
 		bool PressedFiremode = btn & BT_FIREMODE && !(oldbtn & BT_FIREMODE);
 		bool PressedAltReload = btn & BT_ALTRELOAD && !(oldbtn & BT_ALTRELOAD);
 
-		if (PressedFiremode && WeaponStatus[RDProp_Gear] < MaxGear && WeaponStatus[RDProp_Rpm] > MaxRpm / 1.3)
+		if (PressedFiremode && WeaponStatus[RDProp_Gear] < MaxGear)
 		{
 			owner.A_StartSound("Redline/GearUp", 5, CHANF_OVERLAP);
 			WeaponStatus[RDProp_Gear]++;
-			WeaponStatus[RDProp_Rpm] -= int(WeaponStatus[RDProp_Rpm] * (0.7 - 0.1 * WeaponStatus[RDProp_Gear]));
+			WeaponStatus[RDProp_Rpm] -= int(WeaponStatus[RDProp_Rpm] * (0.6 - 0.1 * WeaponStatus[RDProp_Gear]));
 		}
 		else if (PressedAltReload && WeaponStatus[RDProp_Gear] > 0)
 		{
@@ -225,14 +224,14 @@ class HDRedline : HDCellWeapon
 
 		sb.DrawWepNum(hdw.WeaponStatus[RDProp_Heat], MaxHeat * (AceCore.CheckForItem(self, "HDGungnir") ? 1.5 : 1.0), posy: -10, alwaysprecise: true);
 
-		for (int i = 0; i < hdw.WeaponStatus[RDProp_Gear]; ++i)
+		for (int i = 0; i <= hdw.WeaponStatus[RDProp_Gear]; ++i)
 		{
 			sb.DrawRect(-17 - 2 * i, -15, 1, 2);
 		}
 
 		if (hdw.WeaponStatus[RDProp_Flags] & RDF_Overheated)
 		{
-			sb.DrawString(sb.pNewSmallFont, "OVERHEAT", (-24, -28), sb.DI_TEXT_ALIGN_RIGHT | sb.DI_SCREEN_CENTER_BOTTOM, Font.CR_RED, scale: (0.75, 0.75));
+			sb.DrawString(sb.pNewSmallFont, "OVERHEAT", (-24, -28), sb.DI_TEXT_ALIGN_RIGHT | sb.DI_SCREEN_CENTER_BOTTOM, Font.CR_RED, scale: (0.5, 0.5));
 		}
 	}
 
@@ -277,12 +276,12 @@ class HDRedline : HDCellWeapon
 	{
 		int Rpm = invoker.WeaponStatus[RDProp_Rpm];
 		int Gear = invoker.WeaponStatus[RDProp_Gear];
-		return int(50 + (60 * (Rpm / double(MaxRpm))) ** (1.0 + 0.06 * Gear));
+		double RpmFactor = Rpm / double(MaxRpm);
+		return int(50 + (60 * (Rpm / double(MaxRpm))) ** (1.0 + 0.10 * Gear) * (RpmFactor > 1.0 ? RpmFactor * 1.2 : 1.0));
 	}
 
-	const MaxGear = 4;
+	const MaxGear = 2;
 	const MaxRpm = 1200;
-	const PeakRpm = 800;
 	const MaxHeat = 300;
 
 	Default
@@ -350,7 +349,7 @@ class HDRedline : HDCellWeapon
 				
 				double RpmFactor = Rpm / double(MaxRpm);
 				double HeatFactor = RpmFactor > 1.0 ? RpmFactor * 2.0 : RpmFactor;
-				invoker.WeaponStatus[RDProp_Heat] += int(10 + 5 * HeatFactor * (invoker.WeaponStatus[RDProp_Gear] + 1));
+				invoker.WeaponStatus[RDProp_Heat] += int(random(10, 16) + random(8, 12) * HeatFactor * (invoker.WeaponStatus[RDProp_Gear] + 1));
 				A_CheckOverheat();
 
 				A_AlertMonsters();
@@ -413,9 +412,19 @@ class HDRedline : HDCellWeapon
 				{
 					int Rpm = invoker.WeaponStatus[RDProp_Rpm];
 					int Gear = invoker.WeaponStatus[RDProp_Gear];
-					double GearFactor = Gear / double(MaxGear);
-					// [Ace] 1.5 is somewhat of a magic number. It's to make sure the curve reaches the maximum RPM you can achieve.
-					double Gain = 20 * max(0.05, cos(180 * min(1.0, abs(MaxRpm * 1.5 * GearFactor - Rpm) / (MaxRpm * 1.5 * (2.0 - GearFactor * 0.6)))));
+					
+					// [Ace] Fucking magic numbers, how do they work?
+					// After spending over 7 hours trying to come up with math that doesn't suck, I'm hardcoding this shit.
+					// Variables are Speed, Width, Offset.
+					double s, w, o;
+					switch (Gear)
+					{
+						case 0: s = 40; w = 2.00; o = 0.70; break;
+						case 1: s = 28; w = 2.25; o = 1.05; break;
+						case 2: s = 17; w = 1.25; o = 0.75; break;
+					}
+
+					double Gain = (s * max(0, cos(180 * min(1.0, abs(MaxRpm * o - Rpm) / (MaxRpm * w)))));
 					invoker.WeaponStatus[RDProp_Rpm] = Rpm + int(Gain);
 				}
 
