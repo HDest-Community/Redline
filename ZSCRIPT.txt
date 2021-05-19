@@ -96,7 +96,10 @@ class HDRedline : HDCellWeapon
 		{
 			owner.A_StartSound("Redline/GearDown", 5, CHANF_OVERLAP);
 			WeaponStatus[RDProp_Gear]--;
-			WeaponStatus[RDProp_Rpm] += 300;
+			if (WeaponStatus[RDProp_Rpm] > 30)
+			{
+				WeaponStatus[RDProp_Rpm] += 200;
+			}
 			A_CheckOverheat();
 		}
 
@@ -172,12 +175,17 @@ class HDRedline : HDCellWeapon
 		}
 		else if (BatteryCharge == 0)
 		{
-			sb.DrawString(sb.mAmountFont, "00000", (-16, -9), sb.DI_TEXT_ALIGN_RIGHT | sb.DI_TRANSLATABLE | sb.DI_SCREEN_CENTER_BOTTOM, Font.CR_DARKGRAY);
+			sb.DrawString(sb.mAmountFont, "00000", (-16, -9), sb.DI_TEXT_ALIGN_RIGHT | sb.DI_SCREEN_CENTER_BOTTOM, Font.CR_DARKGRAY);
 		}
 
 		for (int i = 0; i < hdw.WeaponStatus[RDProp_Gear]; ++i)
 		{
 			sb.DrawRect(-17 - 2 * i, -12, 1, 2);
+		}
+
+		if (hdw.WeaponStatus[RDProp_Rpm] > MaxRpm)
+		{
+			sb.DrawString(sb.pNewSmallFont, "OVERHEAT", (-24, -26), sb.DI_TEXT_ALIGN_RIGHT | sb.DI_SCREEN_CENTER_BOTTOM, Font.CR_RED, scale: (0.75, 0.75));
 		}
 	}
 
