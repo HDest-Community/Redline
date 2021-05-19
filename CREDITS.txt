@@ -9,3 +9,5 @@ Sounds:
 - Fallout (Interplay/Bethesda)
  + https://gamebanana.com/sounds/35140
  + https://gamebanana.com/sounds/33348
+- Hill Climb Racing 2 (Fingersoft)
+ + Engine rev

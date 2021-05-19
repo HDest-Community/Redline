@@ -11,3 +11,4 @@ Redline/GearUp RDGEARUP
 Redline/GearDown RDGEARDN
 Redline/Overload RDOVERLD
 Redline/Overheated RDBOLTCH // [Ace] Previously used for charging.
+Redline/Revving RDENGREV // [Ace] Previously used for charging.
