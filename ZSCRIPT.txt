@@ -223,7 +223,7 @@ class HDRedline : HDCellWeapon
 			sb.DrawString(sb.mAmountFont, "00000", (-16, -9), sb.DI_TEXT_ALIGN_RIGHT | sb.DI_SCREEN_CENTER_BOTTOM, Font.CR_DARKGRAY);
 		}
 
-		sb.DrawWepNum(hdw.WeaponStatus[RDProp_Heat], MaxHeat * AceCore.CheckForItem(self, "HDGungnir") ? 1.5 : 1.0, posy: -10, alwaysprecise: true);
+		sb.DrawWepNum(hdw.WeaponStatus[RDProp_Heat], MaxHeat * (AceCore.CheckForItem(self, "HDGungnir") ? 1.5 : 1.0), posy: -10, alwaysprecise: true);
 
 		for (int i = 0; i < hdw.WeaponStatus[RDProp_Gear]; ++i)
 		{
@@ -266,7 +266,7 @@ class HDRedline : HDCellWeapon
 
 	private action void A_CheckOverheat()
 	{
-		if (invoker.WeaponStatus[RDProp_Heat] > MaxHeat * AceCore.CheckForItem(self, "HDGungnir") ? 1.5 : 1.0)
+		if (invoker.WeaponStatus[RDProp_Heat] > MaxHeat * (AceCore.CheckForItem(self, "HDGungnir") ? 1.5 : 1.0))
 		{
 			invoker.WeaponStatus[RDProp_Flags] |= RDF_Overheated;
 			A_StartSound("Redline/Overload", 6);
