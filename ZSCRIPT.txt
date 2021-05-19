@@ -120,11 +120,11 @@ class HDRedline : HDCellWeapon
 			return;
 		}
 
-		Console.Printf("\c[Green]RPM:\c- %i \c[Green]Damage:\c- %i \c[Green]Gear:\c- %i \c[Green]Heat:\c- %i",
-			WeaponStatus[RDProp_Rpm],
-			A_GetLaserDamage(),
-			WeaponStatus[RDProp_Gear],
-			WeaponStatus[RDProp_Heat]);
+		// Console.Printf("\c[Green]RPM:\c- %i \c[Green]Damage:\c- %i \c[Green]Gear:\c- %i \c[Green]Heat:\c- %i",
+		// 	WeaponStatus[RDProp_Rpm],
+		// 	A_GetLaserDamage(),
+		// 	WeaponStatus[RDProp_Gear],
+		// 	WeaponStatus[RDProp_Heat]);
 
 		int btn = owner.player.cmd.buttons;
 		int oldbtn = owner.player.oldbuttons;
