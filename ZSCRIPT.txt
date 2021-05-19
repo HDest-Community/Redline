@@ -68,6 +68,10 @@ class HDRedline : HDCellWeapon
 
 		if (WeaponStatus[RDProp_Heat] > 0)
 		{
+			if (WeaponStatus[RDProp_Flags] & RDF_Overheated)
+			{
+				WeaponStatus[RDProp_Heat]--;
+			}
 			if (WeaponStatus[RDProp_Flags] & RDF_HeatSink)
 			{
 				WeaponStatus[RDProp_Heat]--;
@@ -87,8 +91,8 @@ class HDRedline : HDCellWeapon
 				owner.A_StartSound("Redline/Revving", 10, CHANF_LOOPING | CHANF_OVERLAP);
 			}
 			double RpmFactor = Rpm / double(MaxRpm);
-			owner.A_SoundPitch(10, 0.7 + (RpmFactor * 0.7) + 0.05 * WeaponStatus[RDProp_Gear]);
-			owner.A_SoundVolume(10, min(0.5, RpmFactor * 0.75));
+			owner.A_SoundPitch(10, 0.7 + (RpmFactor * 0.7) + 0.15 * WeaponStatus[RDProp_Gear]);
+			owner.A_SoundVolume(10, min(0.5, RpmFactor));
 			if (RpmFactor ~== 0)
 			{
 				owner.A_StopSound(10);
@@ -120,9 +124,10 @@ class HDRedline : HDCellWeapon
 			return;
 		}
 
-		// Console.Printf("\c[Green]RPM:\c- %i \c[Green]Damage:\c- %i \c[Green]Gear:\c- %i \c[Green]Heat:\c- %i",
+		// Console.Printf("\c[Green]RPM:\c- %i \c[Green]Damage:\c- %i \c[Green]Battery:\c- %i \c[Green]Gear:\c- %i \c[Green]Heat:\c- %i",
 		// 	WeaponStatus[RDProp_Rpm],
 		// 	A_GetLaserDamage(),
+		// 	WeaponStatus[RDProp_Battery],
 		// 	WeaponStatus[RDProp_Gear],
 		// 	WeaponStatus[RDProp_Heat]);
 
@@ -135,7 +140,7 @@ class HDRedline : HDCellWeapon
 		{
 			owner.A_StartSound("Redline/GearUp", 5, CHANF_OVERLAP);
 			WeaponStatus[RDProp_Gear]++;
-			WeaponStatus[RDProp_Rpm] -= int(WeaponStatus[RDProp_Rpm] * (0.6 - 0.1 * WeaponStatus[RDProp_Gear]));
+			WeaponStatus[RDProp_Rpm] -= int(WeaponStatus[RDProp_Rpm] * (0.8 - 0.1 * WeaponStatus[RDProp_Gear]));
 		}
 		else if (PressedAltReload && WeaponStatus[RDProp_Gear] > 0)
 		{
@@ -231,7 +236,7 @@ class HDRedline : HDCellWeapon
 
 		if (hdw.WeaponStatus[RDProp_Flags] & RDF_Overheated)
 		{
-			sb.DrawString(sb.pNewSmallFont, "OVERHEAT", (-24, -28), sb.DI_TEXT_ALIGN_RIGHT | sb.DI_SCREEN_CENTER_BOTTOM, Font.CR_RED, scale: (0.5, 0.5));
+			sb.DrawString(sb.pNewSmallFont, "OVERHEAT", (-24, -25), sb.DI_TEXT_ALIGN_RIGHT | sb.DI_SCREEN_CENTER_BOTTOM, Font.CR_RED, scale: (0.5, 0.5));
 		}
 	}
 
@@ -252,8 +257,8 @@ class HDRedline : HDCellWeapon
 		if (hdw.WeaponStatus[RDProp_Flags] & RDF_Scope && scopeview)
 		{
 			TexMan.SetCameraToTexture(hpc, "REDLNCAM", 4);
-			sb.DrawImage("REDLNCAM",(0, ScaledYOffset) + bob, sb.DI_SCREEN_CENTER | sb.DI_ITEM_CENTER);
-			sb.DrawImage("RDLNSCOP",(0, ScaledYOffset) + bob, sb.DI_SCREEN_CENTER | sb.DI_ITEM_CENTER);
+			sb.DrawImage("REDLNCAM", (0, ScaledYOffset) + bob, sb.DI_SCREEN_CENTER | sb.DI_ITEM_CENTER);
+			sb.DrawImage("RDLNSCOP", (0, ScaledYOffset) + bob, sb.DI_SCREEN_CENTER | sb.DI_ITEM_CENTER);
 			bob2 *= 3;
 			double DotOffset = max(abs(bob2.x), abs(bob2.y));
 			if (DotOffset < 20)
@@ -277,7 +282,8 @@ class HDRedline : HDCellWeapon
 		int Rpm = invoker.WeaponStatus[RDProp_Rpm];
 		int Gear = invoker.WeaponStatus[RDProp_Gear];
 		double RpmFactor = Rpm / double(MaxRpm);
-		return int(50 + (60 * (Rpm / double(MaxRpm))) ** (1.0 + 0.10 * Gear) * (RpmFactor > 1.0 ? RpmFactor * 1.2 : 1.0));
+		double DamageDealt = 90 + (30 * (Rpm / double(MaxRpm))) ** (1.0 + 0.25 * Gear) * (RpmFactor > 1.0 ? RpmFactor * 1.2 : 1.0);
+		return int(DamageDealt);
 	}
 
 	const MaxGear = 2;
@@ -324,7 +330,7 @@ class HDRedline : HDCellWeapon
 		Fire:
 			#### A 0
 			{
-				if (invoker.WeaponStatus[RDProp_Battery] <= 0)
+				if (invoker.WeaponStatus[RDProp_Battery] < (1 << invoker.WeaponStatus[RDProp_Gear]))
 				{
 					SetWeaponState('Nope');
 					return;
@@ -348,16 +354,16 @@ class HDRedline : HDCellWeapon
 				A_RailAttack(A_GetLaserDamage(), 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 4.0, 0, "RedlineRaySmoke");
 				
 				double RpmFactor = Rpm / double(MaxRpm);
-				double HeatFactor = RpmFactor > 1.0 ? RpmFactor * 2.0 : RpmFactor;
-				invoker.WeaponStatus[RDProp_Heat] += int(random(10, 16) + random(8, 12) * HeatFactor * (invoker.WeaponStatus[RDProp_Gear] + 1));
+				double HeatFactor = RpmFactor > 1.0 ? RpmFactor * 1.5 : RpmFactor;
+				invoker.WeaponStatus[RDProp_Heat] += int(random(10, 16) + random(8, 14) * HeatFactor * (invoker.WeaponStatus[RDProp_Gear] + 1));
 				A_CheckOverheat();
 
 				A_AlertMonsters();
 				A_MuzzleClimb(0, 0, -0.2, -0.8, -frandom(0.5, 0.9), -frandom(0.5, 0.9), -frandom(0.5, 0.9), -frandom(0.5, 0.9));
-				invoker.WeaponStatus[RDProp_Battery] -= 1;
+				invoker.WeaponStatus[RDProp_Battery] -= 1 << invoker.WeaponStatus[RDProp_Gear];
 			}
-			#### A 2 Offset(0, 38);
-			#### A 1 Offset(0, 34);
+			#### A 2 Offset(0, 38) A_SetTics(2 + 2 * invoker.WeaponStatus[RDProp_Gear]);
+			#### A 1 Offset(0, 34) A_SetTics(1 + 1 * invoker.WeaponStatus[RDProp_Gear]);
 			Goto Nope;
 		AltFire:
 			#### A 1 Offset(0, 34) A_WeaponBusy();
