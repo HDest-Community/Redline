@@ -34,10 +34,9 @@ class HDRedline : HDCellWeapon
 {
 	enum RedlineFlags
 	{
-		RDF_CustomBolt = 1,
-		RDF_HeatSink = 2,
-		RDF_Scope = 4,
-		RDF_Overheated = 8
+		RDF_HeatSink = 1,
+		RDF_Scope = 2,
+		RDF_Overheated = 4
 	}
 
 	enum RedlineProperties
@@ -120,10 +119,6 @@ class HDRedline : HDCellWeapon
 	}
 	override void LoadoutConfigure(string input)
 	{
-		if (GetLoadoutVar(input, "custombolt", 1) > 0)
-		{
-			WeaponStatus[RDProp_Flags] |= RDF_CustomBolt;
-		}
 		if (GetLoadoutVar(input, "sink", 1) > 0)
 		{
 			WeaponStatus[RDProp_Flags] |= RDF_HeatSink;
@@ -301,14 +296,12 @@ class HDRedline : HDCellWeapon
 			Goto Nope;
 		AltFire:
 			#### A 1 Offset(0, 34) A_WeaponBusy();
-			#### B 2 Offset(2, 36) A_JumpIf(invoker.WeaponStatus[RDProp_Flags] & RDF_CustomBolt, 1);
 			#### B 1 Offset(4, 38);
 			#### B 1 Offset(0, 34);
 			#### B 0 A_Refire('BoltPull');
 			Goto Ready;
 		BoltPull:
 			#### C 2 Offset(4, 38) A_StartSound("Redline/BoltBack", 8, CHANF_OVERLAP);
-			#### D 2 Offset(6, 42) A_JumpIf(invoker.WeaponStatus[RDProp_Flags] & RDF_CustomBolt, 1);
 			#### D 1 Offset(6, 42)
 			{
 				if (GunBraced())
@@ -366,12 +359,8 @@ class HDRedline : HDCellWeapon
 		AltHoldEnd:
 			#### D 2 A_StartSound("Redline/BoltFwd", 8, CHANF_OVERLAP);
 			#### C 2;
-			#### B 3 Offset(2, 36)
+			#### B 2 Offset(2, 36)
 			{
-				if (invoker.WeaponStatus[RDProp_Flags] & RDF_CustomBolt)
-				{
-					A_SetTics(1);
-				}
 				A_WeaponReady(WRF_NOFIRE);
 				A_WeaponBusy(false);
 			}
@@ -442,10 +431,6 @@ class RedlineRandom : IdleDummy
 				for (int i = 0; i < 5; ++i)
 				{
 					wpn.Args[i] = Args[i];
-				}
-				if (!random(0, 3))
-				{
-					wpn.WeaponStatus[wpn.RDProp_Flags] |= wpn.RDF_CustomBolt;
 				}
 				if (!random(0, 3))
 				{
