@@ -67,7 +67,7 @@ class HDRedline : HDCellWeapon
 	override string, double GetPickupSprite() { return WeaponStatus[RDProp_Flags] & RDF_Scope ? "RDSGZ0" : "RDNGZ0", 1.0; }
 	override void InitializeWepStats(bool idfa)
 	{
-		WeaponStatus[RDProp_Battery] = 40;
+		WeaponStatus[RDProp_Battery] = 30;
 		WeaponStatus[RDProp_Charge] = GetMaxCharge();
 	}
 	override void LoadoutConfigure(string input)
@@ -118,7 +118,7 @@ class HDRedline : HDCellWeapon
 		{
 			return -1;
 		}
-		double FracCharge = WeaponStatus[RDProp_Battery] / 2.0;
+		double FracCharge = WeaponStatus[RDProp_Battery] / 1.5;
 		return int(useUpper ? ceil(FracCharge) : floor(FracCharge));
 	}
 
@@ -333,7 +333,7 @@ class HDRedline : HDCellWeapon
 						let Battery = HDMagAmmo(FindInventory("HDBattery"));
 						if (Battery && Battery.Amount > 0)
 						{
-							invoker.WeaponStatus[RDProp_Battery] = Battery.TakeMag(true) * 2;
+							invoker.WeaponStatus[RDProp_Battery] = Battery.TakeMag(true) * 1.5;
 							A_StartSound("Redline/CellIn", 10);
 						}
 						break;
