@@ -6,6 +6,10 @@
 - The loadout code is `rdl`.
 - Configuration codes are:
 	- `scope`: Self-explanatory.
-	- `custombolt`: Custom bolt for working the bolt faster.
-	- `cap`: Capacitor for landing an extra shot.
-	- `resonator`: Amplifies damage based on number of charges.
+	- `sink`: Heat sink for faster heat dissipation
+
+### Mechanics
+---
+- Firing the weapon generates heat and RPM. If you get enough heat, the gun will overheat and will become unusable until the heat dissipates. More damage means more heat.
+- Pulling the bolt and holding it will rev up the engine. The more RPM, the more damage that is stored in the charge. The damage boost is tier-based. Each notch on the RPM meter increases the tier once it's reached.
+- It becomes harder to rev the engine from 0 RPM the more charges you have.

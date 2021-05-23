@@ -64,7 +64,7 @@ class HDRedline : HDCellWeapon
 	override void Tick()
 	{
 		double Rpm = WeaponStatus[RDProp_Rpm];
-		Rpm -= random(6, 9);
+		Rpm -= random(6, 7);
 		if (Rpm > MaxRpm * 1.1)
 		{
 			Rpm *= 0.98;
