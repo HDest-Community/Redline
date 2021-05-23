@@ -392,7 +392,7 @@ class HDRedline : HDCellWeapon
 				int ChargeDamage = A_TakeCharge();
 				A_RailAttack(ChargeDamage, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 4.0, 0, "RedlineRaySmoke");
 				
-				invoker.WeaponStatus[RDProp_Heat] += int(random(10, 16) + (ChargeDamage / 3) * frandom(0.9, 1.05));
+				invoker.WeaponStatus[RDProp_Heat] += int(ChargeDamage / 3.5 * frandom(0.925, 1.05));
 				A_CheckOverheat();
 
 				A_AlertMonsters();
