@@ -370,7 +370,6 @@ class HDRedline : HDCellWeapon
 			{
 				if (A_GetCharges() == 0)
 				{
-					Console.Printf("kek");
 					SetWeaponState('Nope');
 					return;
 				}
