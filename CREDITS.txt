@@ -11,3 +11,6 @@ Sounds:
  + https://gamebanana.com/sounds/33348
 - Hill Climb Racing 2 (Fingersoft)
  + Engine rev
+
+Feedback:
+- Massive thanks to Eric and Daerik for their feedback on all of the iterations.

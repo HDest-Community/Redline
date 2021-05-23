@@ -66,10 +66,14 @@ class HDRedline : HDCellWeapon
 	override void Tick()
 	{
 		double Rpm = WeaponStatus[RDProp_Rpm];
-		Rpm -= random(6, 7);
 		if (Rpm > MaxRpm * 1.1)
 		{
-			Rpm *= 0.98;
+			Rpm *= 0.96;
+		}
+		if (!IsRevving)
+		{
+			Rpm -= 1;
+			Rpm *= 0.984;
 		}
 		WeaponStatus[RDProp_Rpm] = int(max(0, Rpm));
 
@@ -98,7 +102,7 @@ class HDRedline : HDCellWeapon
 				owner.A_StartSound("Redline/Revving", 100, CHANF_LOOPING);
 			}
 			double RpmFactor = Rpm / double(MaxRpm);
-			owner.A_SoundPitch(100, 0.7 + (RpmFactor * 0.7) + 0.15 * (A_GetCharges() - 1));
+			owner.A_SoundPitch(100, 0.6 + (RpmFactor * 0.7) + 0.15 * (A_GetCharges() - 1));
 			owner.A_SoundVolume(100, min(0.5, RpmFactor * 1.5));
 			if (RpmFactor ~== 0)
 			{
@@ -349,6 +353,7 @@ class HDRedline : HDCellWeapon
 	const MaxHeat = 300;
 
 	private bool HasFired;
+	private bool IsRevving;
 
 	Default
 	{
@@ -374,6 +379,7 @@ class HDRedline : HDCellWeapon
 			RDNG A 0;
 			#### A 1
 			{
+				invoker.IsRevving = false;
 				if (!PressingFire())
 				{
 					invoker.HasFired = false;
@@ -485,23 +491,9 @@ class HDRedline : HDCellWeapon
 
 				if (!(invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator) && invoker.WeaponStatus[RDProp_Battery] > 0)
 				{
+					invoker.IsRevving = true;
 					int Rpm = invoker.WeaponStatus[RDProp_Rpm];
-					
-					// [Ace] Fucking magic numbers, how do they work?
-					// After spending over 7 hours trying to come up with math that doesn't suck, I'm hardcoding this shit.
-					// Variables are Speed, Width, Offset.
-					double s, w, o;
-					switch (A_GetCharges())
-					{
-						case 0: s = 50; w = 3.00; o = 0.00; break;
-						case 1: s = 48; w = 2.75; o = 0.15; break;
-						case 2: s = 46; w = 2.50; o = 0.30; break;
-						case 3: s = 44; w = 2.25; o = 0.45; break;
-						case 4: s = 42; w = 2.00; o = 0.60; break;
-					}
-
-					double Gain = (s * max(0, cos(180 * min(1.0, abs(MaxRpm * o - Rpm) / (MaxRpm * w)))));
-					invoker.WeaponStatus[RDProp_Rpm] = Rpm + int(Gain);
+					invoker.WeaponStatus[RDProp_Rpm] = Rpm + int((2 ** (Rpm * 0.0016)) * 10);
 				}
 
 				if (PressingAltFire())
@@ -526,7 +518,6 @@ class HDRedline : HDCellWeapon
 					{
 						A_AddCharge(int(random(90, 120) ** (1.0 + 0.06 * A_GetCharges())));
 					}
-					invoker.WeaponStatus[RDProp_Rpm] = int(max(0, invoker.WeaponStatus[RDProp_Rpm] * (0.78 + 0.05 * A_GetCharges()) - random(125, 150)));
 					invoker.WeaponStatus[RDProp_Battery]--;
 				}
 			}
