@@ -83,7 +83,7 @@ class HDRedline : HDCellWeapon
 			{
 				WeaponStatus[RDProp_Heat]--;
 			}
-			DrainHeat(RDProp_Heat);
+			DrainHeat(RDProp_Heat, 10, 0.5, 1.5, 0.6);
 		}
 		if (WeaponStatus[RDProp_Heat] <= 0)
 		{
@@ -131,14 +131,14 @@ class HDRedline : HDCellWeapon
 			return;
 		}
 
-		Console.Printf("\c[Green]RPM:\c- %i \c[Green]Damage:\c- %i, %i, %i, %i \c[Green]Tier:\c- %i \c[Green]Heat:\c- %i",
-			WeaponStatus[RDProp_Rpm],
-			WeaponStatus[RDProp_ChargeF],
-			WeaponStatus[RDProp_ChargeF + 1],
-			WeaponStatus[RDProp_ChargeF + 2],
-			WeaponStatus[RDProp_ChargeF + 3],
-			A_GetDamageTier(),
-			WeaponStatus[RDProp_Heat]);
+		// Console.Printf("\c[Green]RPM:\c- %i \c[Green]Damage:\c- %i, %i, %i, %i \c[Green]Tier:\c- %i \c[Green]Heat:\c- %i",
+		// 	WeaponStatus[RDProp_Rpm],
+		// 	WeaponStatus[RDProp_ChargeF],
+		// 	WeaponStatus[RDProp_ChargeF + 1],
+		// 	WeaponStatus[RDProp_ChargeF + 2],
+		// 	WeaponStatus[RDProp_ChargeF + 3],
+		// 	A_GetDamageTier(),
+		// 	WeaponStatus[RDProp_Heat]);
 
 		Super.DoEffect();
 	}
