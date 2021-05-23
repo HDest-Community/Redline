@@ -493,11 +493,11 @@ class HDRedline : HDCellWeapon
 					double s, w, o;
 					switch (A_GetCharges())
 					{
-						case 0: s = 40; w = 3.00; o = 0.00; break;
-						case 1: s = 35; w = 2.80; o = 0.30; break;
-						case 2: s = 30; w = 2.60; o = 0.50; break;
-						case 3: s = 30; w = 2.40; o = 0.65; break;
-						case 4: s = 30; w = 2.20; o = 0.75; break;
+						case 0: s = 50; w = 3.00; o = 0.00; break;
+						case 1: s = 48; w = 2.75; o = 0.15; break;
+						case 2: s = 46; w = 2.50; o = 0.30; break;
+						case 3: s = 44; w = 2.25; o = 0.45; break;
+						case 4: s = 42; w = 2.00; o = 0.60; break;
 					}
 
 					double Gain = (s * max(0, cos(180 * min(1.0, abs(MaxRpm * o - Rpm) / (MaxRpm * w)))));
@@ -526,7 +526,7 @@ class HDRedline : HDCellWeapon
 					{
 						A_AddCharge(int(random(90, 120) ** (1.0 + 0.06 * A_GetCharges())));
 					}
-					invoker.WeaponStatus[RDProp_Rpm] = int(max(0, invoker.WeaponStatus[RDProp_Rpm] * (0.60 + 0.07 * A_GetCharges()) - random(100, 150)));
+					invoker.WeaponStatus[RDProp_Rpm] = int(max(0, invoker.WeaponStatus[RDProp_Rpm] * (0.78 + 0.05 * A_GetCharges()) - random(125, 150)));
 					invoker.WeaponStatus[RDProp_Battery]--;
 				}
 			}
