@@ -47,7 +47,7 @@ class HDRedline : HDCellWeapon
 		RDProp_Battery,
 
 		// [Ace] Charge(F)irst and Charge(L)ast.
-		// This is actually the damage of each charge. The number of charges is calculated by checking if Damage > 0;
+		// This is actually the tier of each charge. The number of charges is calculated by checking if tier >= 0;
 		RDProp_ChargeF,
 		RDProp_ChargeL = RDProp_ChargeF + MaxCharges,
 
@@ -160,12 +160,12 @@ class HDRedline : HDCellWeapon
 	override void InitializeWepStats(bool idfa)
 	{
 		WeaponStatus[RDProp_Battery] = 30;
-		WeaponStatus[RDProp_ChargeF] = random(90, 120);
-		WeaponStatus[RDProp_ChargeF + 1] = random(90, 120);
-		WeaponStatus[RDProp_ChargeF + 2] = random(90, 120);
+		WeaponStatus[RDProp_ChargeF] = 0;
+		WeaponStatus[RDProp_ChargeF + 1] = 0;
+		WeaponStatus[RDProp_ChargeF + 2] = 0;
 		if (WeaponStatus[RDProp_Flags] & RDF_Capacitor)
 		{
-			WeaponStatus[RDProp_ChargeF + 3] = random(90, 120);
+			WeaponStatus[RDProp_ChargeF + 3] = 0;
 		}
 	}
 	override void LoadoutConfigure(string input)
@@ -251,6 +251,13 @@ class HDRedline : HDCellWeapon
 			sb.DrawString(sb.mAmountFont, "00000", (-16, -10), sb.DI_TEXT_ALIGN_RIGHT | sb.DI_SCREEN_CENTER_BOTTOM, Font.CR_DARKGRAY);
 		}
 
+		Color ChargeCols[] =
+		{
+			Color(255, 32, 192, 32),
+			Color(255, 192, 192, 32),
+			Color(255, 192, 128, 32),
+			Color(255, 192, 32, 32)
+		};
 		for (int i = 0; i < A_GetCharges(); ++i)
 		{
 			if (NoEngine)
@@ -259,7 +266,7 @@ class HDRedline : HDCellWeapon
 			}
 			else
 			{
-				sb.Fill(GetChargeColor(hdw.WeaponStatus[RDProp_ChargeF + i]), -21 - 6 * i, -4, 5, 2, sb.DI_SCREEN_CENTER_BOTTOM);
+				sb.Fill(ChargeCols[hdw.WeaponStatus[RDProp_ChargeF + i]], -21 - 6 * i, -4, 5, 2, sb.DI_SCREEN_CENTER_BOTTOM);
 			}
 		}
 	}
@@ -306,7 +313,7 @@ class HDRedline : HDCellWeapon
 		int Count = 0;
 		for (int i = RDProp_ChargeF; i <= RDProp_ChargeL; ++i)
 		{
-			if (invoker.WeaponStatus[i] > 0)
+			if (invoker.WeaponStatus[i] >= 0)
 			{
 				Count++;
 			}
@@ -328,34 +335,13 @@ class HDRedline : HDCellWeapon
 		return Tier;
 	}
 
-	private clearscope Color GetChargeColor(int dmg)
-	{
-		Color Cols[] =
-		{
-			Color(255, 32, 192, 32),
-			Color(255, 192, 192, 32),
-			Color(255, 192, 128, 32),
-			Color(255, 192, 32, 32)
-		};
-
-		for (int i = Notches.Size(); i >= 0; --i)
-		{
-			double exp = 1.0 + DamageExp * i;
-			if (dmg >= MinDamage ** exp && dmg <= MaxDamage ** exp)
-			{
-				return Cols[i];
-			}
-		}
-		return 0;
-	}
-
-	private action void A_AddCharge(int dmg)
+	private action void A_AddCharge(int tier)
 	{
 		for (int i = RDProp_ChargeF; i <= RDProp_ChargeL; ++i)
 		{
-			if (invoker.WeaponStatus[i] == 0)
+			if (invoker.WeaponStatus[i] == -1)
 			{
-				invoker.WeaponStatus[i] = dmg;
+				invoker.WeaponStatus[i] = tier;
 				break;
 			}
 		}
@@ -365,11 +351,11 @@ class HDRedline : HDCellWeapon
 	{
 		for (int i = RDProp_ChargeL; i >= RDProp_ChargeF; --i)
 		{
-			if (invoker.WeaponStatus[i] > 0)
+			if (invoker.WeaponStatus[i] >= 0)
 			{
-				int dmg = invoker.WeaponStatus[i];
-				invoker.WeaponStatus[i] = 0;
-				return dmg;
+				int tier = invoker.WeaponStatus[i];
+				invoker.WeaponStatus[i] = -1;
+				return int(random(MinDamage, MaxDamage) ** (1.0 + DamageExp * tier));
 			}
 		}
 		return 0;
@@ -541,14 +527,7 @@ class HDRedline : HDCellWeapon
 				{
 					A_StartSound("Redline/Charge", 9, pitch: 0.85);
 					bool NoEngine = invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator;
-					if (!NoEngine)
-					{
-						A_AddCharge(int(random(MinDamage, MaxDamage) ** (1.0 + DamageExp * A_GetDamageTier())));
-					}
-					else
-					{
-						A_AddCharge(int(random(MinDamage, MaxDamage) ** (1.0 + DamageExp * A_GetCharges())));
-					}
+					A_AddCharge(!NoEngine ? A_GetDamageTier() : A_GetCharges());
 					invoker.WeaponStatus[RDProp_Battery]--;
 					invoker.IsRevving = false;
 				}
