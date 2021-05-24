@@ -519,11 +519,13 @@ class HDRedline : HDCellWeapon
 						A_AddCharge(int(random(90, 120) ** (1.0 + 0.06 * A_GetCharges())));
 					}
 					invoker.WeaponStatus[RDProp_Battery]--;
+					invoker.IsRevving = false;
 				}
 			}
 			#### C 2;
 			#### B 2 Offset(2, 36)
 			{
+				A_Refire("AltHold");
 				A_WeaponReady(WRF_NOFIRE);
 				A_WeaponBusy(false);
 			}
