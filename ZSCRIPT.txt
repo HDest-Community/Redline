@@ -259,7 +259,7 @@ class HDRedline : HDCellWeapon
 			}
 			else
 			{
-				sb.Fill(A_GetChargeColor(hdw.WeaponStatus[RDProp_ChargeF + i]), -21 - 6 * i, -4, 5, 2, sb.DI_SCREEN_CENTER_BOTTOM);
+				sb.Fill(GetChargeColor(hdw.WeaponStatus[RDProp_ChargeF + i]), -21 - 6 * i, -4, 5, 2, sb.DI_SCREEN_CENTER_BOTTOM);
 			}
 		}
 	}
@@ -328,7 +328,7 @@ class HDRedline : HDCellWeapon
 		return Tier;
 	}
 
-	private clearscope action Color A_GetChargeColor(int dmg)
+	private clearscope Color GetChargeColor(int dmg)
 	{
 		Color Cols[] =
 		{
@@ -338,7 +338,7 @@ class HDRedline : HDCellWeapon
 			Color(255, 192, 32, 32)
 		};
 
-		for (int i = 0; i <= A_GetCharges(); ++i)
+		for (int i = 0; i <= Notches.Size(); ++i)
 		{
 			double exp = 1.0 + DamageExp * i;
 			if (dmg >= MinDamage ** exp && dmg <= MaxDamage ** exp)
