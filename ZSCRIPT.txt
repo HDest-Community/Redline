@@ -320,7 +320,7 @@ class HDRedline : HDCellWeapon
 		int Rpm = invoker.WeaponStatus[RDProp_Rpm];
 		for (int i = 0; i < invoker.Notches.Size(); ++i)
 		{
-			if (Rpm > int(MaxRpm * invoker.Notches[i]))
+			if (Rpm >= int(MaxRpm * invoker.Notches[i]))
 			{
 				Tier++;
 			}
