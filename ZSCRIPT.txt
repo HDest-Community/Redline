@@ -253,7 +253,14 @@ class HDRedline : HDCellWeapon
 
 		for (int i = 0; i < A_GetCharges(); ++i)
 		{
-			sb.DrawRect((-21 - 6 * i), -4, 5, 2);
+			if (NoEngine)
+			{
+				sb.DrawRect(-21 - 6 * i, -4, 5, 2);
+			}
+			else
+			{
+				sb.Fill(A_GetChargeColor(hdw.WeaponStatus[RDProp_ChargeF + i]), -21 - 6 * i, -4, 5, 2, sb.DI_SCREEN_CENTER_BOTTOM);
+			}
 		}
 	}
 
@@ -321,6 +328,27 @@ class HDRedline : HDCellWeapon
 		return Tier;
 	}
 
+	private clearscope action Color A_GetChargeColor(int dmg)
+	{
+		Color Cols[] =
+		{
+			Color(255, 64, 192, 64),
+			Color(255, 192, 192, 64),
+			Color(255, 192, 128, 32),
+			Color(255, 192, 32, 32)
+		};
+
+		for (int i = 0; i <= A_GetCharges(); ++i)
+		{
+			double exp = 1.0 + DamageExp * i;
+			if (dmg >= MinDamage ** exp && dmg <= MaxDamage ** exp)
+			{
+				return Cols[i];
+			}
+		}
+		return 0;
+	}
+
 	private action void A_AddCharge(int dmg)
 	{
 		for (int i = RDProp_ChargeF; i <= RDProp_ChargeL; ++i)
@@ -351,6 +379,9 @@ class HDRedline : HDCellWeapon
 	static const double Notches[] = { 0.2, 0.6, 0.9 };
 	const MaxRpm = 1200;
 	const MaxHeat = 300;
+	const MinDamage = 90;
+	const MaxDamage = 120;
+	const DamageExp = 0.06;
 
 	private bool HasFired;
 	private bool IsRevving;
@@ -512,11 +543,11 @@ class HDRedline : HDCellWeapon
 					bool NoEngine = invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator;
 					if (!NoEngine)
 					{
-						A_AddCharge(int(random(90, 120) ** (1.0 + 0.06 * A_GetDamageTier())));
+						A_AddCharge(int(random(MinDamage, MaxDamage) ** (1.0 + DamageExp * A_GetDamageTier())));
 					}
 					else
 					{
-						A_AddCharge(int(random(90, 120) ** (1.0 + 0.06 * A_GetCharges())));
+						A_AddCharge(int(random(MinDamage, MaxDamage) ** (1.0 + DamageExp * A_GetCharges())));
 					}
 					invoker.WeaponStatus[RDProp_Battery]--;
 					invoker.IsRevving = false;
