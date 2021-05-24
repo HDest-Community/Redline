@@ -338,7 +338,7 @@ class HDRedline : HDCellWeapon
 			Color(255, 192, 32, 32)
 		};
 
-		for (int i = 0; i <= Notches.Size(); ++i)
+		for (int i = Notches.Size(); i >= 0; --i)
 		{
 			double exp = 1.0 + DamageExp * i;
 			if (dmg >= MinDamage ** exp && dmg <= MaxDamage ** exp)
