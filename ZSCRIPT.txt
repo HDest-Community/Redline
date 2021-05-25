@@ -163,10 +163,7 @@ class HDRedline : HDCellWeapon
 		WeaponStatus[RDProp_ChargeF] = 0;
 		WeaponStatus[RDProp_ChargeF + 1] = 0;
 		WeaponStatus[RDProp_ChargeF + 2] = 0;
-		if (WeaponStatus[RDProp_Flags] & RDF_Capacitor)
-		{
-			WeaponStatus[RDProp_ChargeF + 3] = 0;
-		}
+		WeaponStatus[RDProp_ChargeF + 3] = WeaponStatus[RDProp_Flags] & RDF_Capacitor ? 0 : -1;
 	}
 	override void LoadoutConfigure(string input)
 	{
