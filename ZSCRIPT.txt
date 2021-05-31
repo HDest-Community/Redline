@@ -73,7 +73,7 @@ class HDRedline : HDCellWeapon
 		if (!IsRevving)
 		{
 			Rpm -= 1;
-			Rpm *= 0.984;
+			Rpm *= 0.986;
 		}
 		WeaponStatus[RDProp_Rpm] = int(max(0, Rpm));
 
@@ -438,13 +438,13 @@ class HDRedline : HDCellWeapon
 				A_Light0();
 				A_StartSound("Redline/Fire", CHAN_WEAPON);
 
-				invoker.WeaponStatus[RDProp_Rpm] += random(50, 80);
+				invoker.WeaponStatus[RDProp_Rpm] += random(100, 150);
 				int Rpm = invoker.WeaponStatus[RDProp_Rpm];
 
 				int ChargeDamage = A_TakeCharge();
 				A_RailAttack(ChargeDamage, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 4.0, 0, "RedlineRaySmoke");
 				
-				invoker.WeaponStatus[RDProp_Heat] += int(ChargeDamage / 4 * frandom(0.925, 1.05));
+				invoker.WeaponStatus[RDProp_Heat] += int(ChargeDamage / (invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator ? 4 : 3) * frandom(0.925, 1.05));
 				A_CheckOverheat();
 
 				A_AlertMonsters();
