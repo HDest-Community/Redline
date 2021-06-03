@@ -237,8 +237,7 @@ class HDRedline : HDCellWeapon
 			{
 				sb.DrawWepNum(hdw.WeaponStatus[RDProp_Rpm], MaxRpm, posy: -8, alwaysprecise: true);
 				sb.Fill(Color(255, 32, 192, 32), -16 + -22 * Notches[0], -10, -2, 2, sb.DI_SCREEN_CENTER_BOTTOM);
-				sb.Fill(Color(255, 192, 192, 32), -16 + -22 * Notches[1], -10, -2, 2, sb.DI_SCREEN_CENTER_BOTTOM);
-				sb.Fill(Color(255, 192, 32, 32), -16 + -22 * Notches[2], -10, -2, 2, sb.DI_SCREEN_CENTER_BOTTOM);
+				sb.Fill(Color(255, 192, 32, 32), -16 + -22 * Notches[1], -10, -2, 2, sb.DI_SCREEN_CENTER_BOTTOM);
 			}
 
 			sb.DrawWepNum(BatteryCharge, 20, posy: -5);
@@ -252,7 +251,6 @@ class HDRedline : HDCellWeapon
 		{
 			Color(255, 32, 192, 32),
 			Color(255, 192, 192, 32),
-			Color(255, 192, 128, 32),
 			Color(255, 192, 32, 32)
 		};
 		for (int i = 0; i < A_GetCharges(); ++i)
@@ -344,7 +342,7 @@ class HDRedline : HDCellWeapon
 		}
 	}
 
-	private action int A_TakeCharge()
+	private action int A_TakeCharge(double exp)
 	{
 		for (int i = RDProp_ChargeL; i >= RDProp_ChargeF; --i)
 		{
@@ -352,19 +350,18 @@ class HDRedline : HDCellWeapon
 			{
 				int tier = invoker.WeaponStatus[i];
 				invoker.WeaponStatus[i] = -1;
-				return int(random(MinDamage, MaxDamage) ** (1.0 + DamageExp * tier));
+				return int(random(MinDamage, MaxDamage) ** (1.0 + exp * tier));
 			}
 		}
 		return 0;
 	}
 
 	const MaxCharges = 3;
-	static const double Notches[] = { 0.2, 0.6, 0.9 };
+	static const double Notches[] = { 0.3, 0.9 };
 	const MaxRpm = 1200;
 	const MaxHeat = 300;
 	const MinDamage = 90;
 	const MaxDamage = 120;
-	const DamageExp = 0.06;
 
 	private bool HasFired;
 	private bool IsRevving;
@@ -441,10 +438,11 @@ class HDRedline : HDCellWeapon
 				invoker.WeaponStatus[RDProp_Rpm] += random(100, 150);
 				int Rpm = invoker.WeaponStatus[RDProp_Rpm];
 
-				int ChargeDamage = A_TakeCharge();
+				bool NoEngine = invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator;
+				int ChargeDamage = A_TakeCharge(NoEngine ? 0.06 : 0.10);
 				A_RailAttack(ChargeDamage, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 4.0, 0, "RedlineRaySmoke");
 				
-				invoker.WeaponStatus[RDProp_Heat] += int(ChargeDamage / (invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator ? 4 : 3) * frandom(0.925, 1.05));
+				invoker.WeaponStatus[RDProp_Heat] += int(ChargeDamage / (NoEngine ? 4 : 3) * frandom(0.925, 1.05));
 				A_CheckOverheat();
 
 				A_AlertMonsters();
