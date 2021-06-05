@@ -14,5 +14,4 @@
 ---
 - Firing the weapon generates heat and RPM. If you get enough heat, the gun will overheat and will become unusable until the heat dissipates. More damage means more heat.
 - Pulling the bolt and holding it will rev up the engine. The more RPM, the more damage that is stored in the charge. The damage boost is tier-based. Each notch on the RPM meter increases the tier once it's reached.
-- It becomes harder to rev the engine from 0 RPM the more charges you have.
 - If the resonator is used, only the heat mechanic applies since there is no engine.

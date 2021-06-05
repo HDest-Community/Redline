@@ -89,7 +89,7 @@ class HDRedline : HDCellWeapon
 			}
 			DrainHeat(RDProp_Heat, 10, 0.5, 1.5, 0.6);
 		}
-		if (WeaponStatus[RDProp_Heat] <= 0)
+		else
 		{
 			WeaponStatus[RDProp_Flags] &= ~RDF_Overheated;
 			WeaponStatus[RDProp_Heat] = 0;
@@ -108,6 +108,11 @@ class HDRedline : HDCellWeapon
 			{
 				owner.A_StopSound(100);
 			}
+		}
+		
+		if (!owner || owner.player.ReadyWeapon != self)
+		{
+			IsRevving = false;
 		}
 
 		Super.Tick();
