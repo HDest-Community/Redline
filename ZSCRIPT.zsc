@@ -644,7 +644,7 @@ class RedlineRayImpact : HDActor
 		+FORCERADIUSDMG
 		+NOBLOOD
 		Decal "RedlineScorch";
-		DamageType "Thermal";
+		DamageType "Hot";
 	}
 
 	States
