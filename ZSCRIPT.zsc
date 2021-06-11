@@ -510,7 +510,8 @@ class HDRedline : HDCellWeapon
 				{
 					invoker.IsRevving = true;
 					int Rpm = invoker.WeaponStatus[RDProp_Rpm];
-					invoker.WeaponStatus[RDProp_Rpm] = Rpm + int((2 ** (Rpm * 0.0016)) * 10);
+					int Heat = invoker.WeaponStatus[RDProp_Heat];
+					invoker.WeaponStatus[RDProp_Rpm] = Rpm + int((2 ** (Rpm * 0.0016)) * (10 + 6 * (Heat / double(MaxHeat))));
 				}
 
 				if (PressingAltFire())
