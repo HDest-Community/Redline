@@ -73,7 +73,7 @@ class HDRedline : HDCellWeapon
 		double Rpm = WeaponStatus[RDProp_Rpm];
 		if (Rpm > MaxRpm * 1.1)
 		{
-			Rpm *= 0.92;
+			Rpm *= frandom(0.91, 0.92);
 		}
 
 		if (!IsRevving)
@@ -455,7 +455,7 @@ class HDRedline : HDCellWeapon
 
 				bool NoEngine = invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator;
 				int ChargeDamage = A_TakeCharge(NoEngine ? 0.06 : 0.10);
-				invoker.WeaponStatus[RDProp_Rpm] += ChargeDamage;
+				invoker.WeaponStatus[RDProp_Rpm] += ChargeDamage / 2;
 				A_RailAttack(ChargeDamage, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 4.0, 0, "RedlineRaySmoke");
 				
 				A_CheckOverheat();
@@ -521,8 +521,11 @@ class HDRedline : HDCellWeapon
 				{
 					invoker.IsRevving = true;
 					int rpm = invoker.WeaponStatus[RDProp_Rpm];
-					double heatFac = invoker.WeaponStatus[RDProp_Heat] / double(A_GetMaxHeat(true));
-					invoker.WeaponStatus[RDProp_Rpm] = rpm + int((2 ** (rpm * (0.0016 - 0.0008 * heatFac)) * (10 + 10 * heatFac)));
+					double heatFac = invoker.WeaponStatus[RDProp_Heat] / double(A_GetMaxHeat());
+					bool hasGungnir = AceCore.CheckForItem(self, "HDGungnir");
+
+					int baseRate = hasGungnir ? 15 : 10;
+					invoker.WeaponStatus[RDProp_Rpm] = rpm + min(60, int((2 ** (rpm * (0.0035 - 0.00192 * heatFac)) * (baseRate + 10 * heatFac))));
 				}
 
 				if (PressingAltFire())
