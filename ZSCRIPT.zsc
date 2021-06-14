@@ -65,6 +65,11 @@ class HDRedline : HDCellWeapon
 
 	override void Tick()
 	{
+		if (!owner || owner.player.ReadyWeapon != self || WeaponStatus[RDProp_Flags] & RDF_Overheated)
+		{
+			IsRevving = false;
+		}
+
 		double Rpm = WeaponStatus[RDProp_Rpm];
 		if (Rpm > MaxRpm * 1.1)
 		{
@@ -109,11 +114,6 @@ class HDRedline : HDCellWeapon
 			{
 				owner.A_StopSound(100);
 			}
-		}
-		
-		if (!owner || owner.player.ReadyWeapon != self)
-		{
-			IsRevving = false;
 		}
 
 		Super.Tick();
@@ -234,7 +234,7 @@ class HDRedline : HDCellWeapon
 
 		bool NoEngine = hdw.WeaponStatus[RDProp_Flags] & RDF_Resonator;
 
-		sb.DrawWepNum(hdw.WeaponStatus[RDProp_Heat], MaxHeat * (AceCore.CheckForItem(self, "HDGungnir") ? 1.5 : 1.0), posy: NoEngine ? -8 : -11, alwaysprecise: true);
+		sb.DrawWepNum(hdw.WeaponStatus[RDProp_Heat], A_GetMaxHeat(), posy: NoEngine ? -8 : -11, alwaysprecise: true);
 
 		int BatteryCharge = GetRealBatteryCharge(true);
 		if (BatteryCharge > 0)
@@ -302,10 +302,10 @@ class HDRedline : HDCellWeapon
 
 	private action void A_CheckOverheat()
 	{
-		if (invoker.WeaponStatus[RDProp_Heat] > MaxHeat * (AceCore.CheckForItem(self, "HDGungnir") ? 1.5 : 1.0))
+		if (invoker.WeaponStatus[RDProp_Heat] > A_GetMaxHeat())
 		{
 			invoker.WeaponStatus[RDProp_Flags] |= RDF_Overheated;
-			A_StartSound("Redline/Overload", 6);
+			invoker.owner.A_StartSound("Redline/Overload", 10);
 		}
 	}
 
@@ -362,10 +362,22 @@ class HDRedline : HDCellWeapon
 		return 0;
 	}
 
+	private clearscope action int A_GetMaxHeat(bool raw = false)
+	{
+		double mult = 1.0;
+		if (!raw)
+		{
+			if (AceCore.CheckForItem(invoker.owner, 'HDGungnir'))
+			{
+				mult += 0.5;
+			}
+		}
+		return int(300 * mult);
+	}
+
 	const MaxCharges = 3;
 	static const double Notches[] = { 0.3, 0.9 };
 	const MaxRpm = 1200;
-	const MaxHeat = 300;
 	const MinDamage = 90;
 	const MaxDamage = 120;
 
@@ -505,12 +517,12 @@ class HDRedline : HDCellWeapon
 					return;
 				}
 
-				if (!(invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator) && invoker.WeaponStatus[RDProp_Battery] > 0)
+				if (!(invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator) && invoker.WeaponStatus[RDProp_Battery] > 0 && !(invoker.WeaponStatus[RDProp_Flags] & RDF_Overheated))
 				{
 					invoker.IsRevving = true;
 					int Rpm = invoker.WeaponStatus[RDProp_Rpm];
 					int Heat = invoker.WeaponStatus[RDProp_Heat];
-					invoker.WeaponStatus[RDProp_Rpm] = Rpm + int((2 ** (Rpm * 0.0016)) * (10 + 6 * (Heat / double(MaxHeat))));
+					invoker.WeaponStatus[RDProp_Rpm] = Rpm + int((2 ** (Rpm * 0.0016)) * (10 + 6 * (Heat / double(A_GetMaxHeat(true)))));
 				}
 
 				if (PressingAltFire())
