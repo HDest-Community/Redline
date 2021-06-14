@@ -441,11 +441,9 @@ class HDRedline : HDCellWeapon
 				A_Light0();
 				A_StartSound("Redline/Fire", CHAN_WEAPON);
 
-				invoker.WeaponStatus[RDProp_Rpm] += random(100, 150);
-				int Rpm = invoker.WeaponStatus[RDProp_Rpm];
-
 				bool NoEngine = invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator;
 				int ChargeDamage = A_TakeCharge(NoEngine ? 0.06 : 0.10);
+				invoker.WeaponStatus[RDProp_Rpm] += ChargeDamage;
 				A_RailAttack(ChargeDamage, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 4.0, 0, "RedlineRaySmoke");
 				
 				invoker.WeaponStatus[RDProp_Heat] += int(ChargeDamage / (NoEngine ? 4 : 3) * frandom(0.925, 1.05));
