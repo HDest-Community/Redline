@@ -455,7 +455,6 @@ class HDRedline : HDCellWeapon
 
 				bool NoEngine = invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator;
 				int ChargeDamage = A_TakeCharge(NoEngine ? 0.06 : 0.10);
-				invoker.WeaponStatus[RDProp_Rpm] += ChargeDamage / 2;
 				A_RailAttack(ChargeDamage, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 4.0, 0, "RedlineRaySmoke");
 				
 				A_CheckOverheat();
