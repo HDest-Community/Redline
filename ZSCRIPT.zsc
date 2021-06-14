@@ -458,8 +458,8 @@ class HDRedline : HDCellWeapon
 				invoker.WeaponStatus[RDProp_Rpm] += ChargeDamage;
 				A_RailAttack(ChargeDamage, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 4.0, 0, "RedlineRaySmoke");
 				
-				invoker.WeaponStatus[RDProp_Heat] += int(ChargeDamage / (NoEngine ? 4 : 3) * frandom(0.925, 1.05));
 				A_CheckOverheat();
+				invoker.WeaponStatus[RDProp_Heat] += int(ChargeDamage / (NoEngine ? 4 : 3) * frandom(0.925, 1.05));
 
 				A_AlertMonsters();
 				A_MuzzleClimb(0, 0, -0.2, -0.8, -frandom(0.5, 0.9), -frandom(0.5, 0.9), -frandom(0.5, 0.9), -frandom(0.5, 0.9));
@@ -520,9 +520,9 @@ class HDRedline : HDCellWeapon
 				if (!(invoker.WeaponStatus[RDProp_Flags] & RDF_Resonator) && invoker.WeaponStatus[RDProp_Battery] > 0 && !(invoker.WeaponStatus[RDProp_Flags] & RDF_Overheated))
 				{
 					invoker.IsRevving = true;
-					int Rpm = invoker.WeaponStatus[RDProp_Rpm];
-					int Heat = invoker.WeaponStatus[RDProp_Heat];
-					invoker.WeaponStatus[RDProp_Rpm] = Rpm + int((2 ** (Rpm * 0.0016)) * (10 + 6 * (Heat / double(A_GetMaxHeat(true)))));
+					int rpm = invoker.WeaponStatus[RDProp_Rpm];
+					double heatFac = invoker.WeaponStatus[RDProp_Heat] / double(A_GetMaxHeat(true));
+					invoker.WeaponStatus[RDProp_Rpm] = rpm + int((2 ** (rpm * (0.0016 - 0.0008 * heatFac)) * (10 + 10 * heatFac)));
 				}
 
 				if (PressingAltFire())
