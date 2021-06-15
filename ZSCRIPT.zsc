@@ -524,7 +524,7 @@ class HDRedline : HDCellWeapon
 					bool hasGungnir = AceCore.CheckForItem(self, "HDGungnir");
 
 					int baseRate = hasGungnir ? 15 : 10;
-					invoker.WeaponStatus[RDProp_Rpm] = rpm + min(60, int((2 ** (rpm * (0.0035 - 0.00174 * heatFac)) * (baseRate + 10 * heatFac))));
+					invoker.WeaponStatus[RDProp_Rpm] = rpm + min(60, int((2 ** (rpm * (0.0028 - 0.0013 * heatFac)) * (baseRate + 10 * heatFac))));
 				}
 
 				if (PressingAltFire())
