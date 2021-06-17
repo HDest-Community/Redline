@@ -134,24 +134,24 @@ class HDRedline : HDCellWeapon
 		Super.OnDestroy();
 	}
 
-	override void DoEffect()
-	{
-		if (!owner || !owner.player || owner.player.ReadyWeapon != self)
-		{
-			return;
-		}
+	// override void DoEffect()
+	// {
+	// 	if (!owner || !owner.player || owner.player.ReadyWeapon != self)
+	// 	{
+	// 		return;
+	// 	}
 
-		// Console.Printf("\c[Green]RPM:\c- %i \c[Green]Damage:\c- %i, %i, %i, %i \c[Green]Tier:\c- %i \c[Green]Heat:\c- %i",
-		// 	WeaponStatus[RDProp_Rpm],
-		// 	WeaponStatus[RDProp_ChargeF],
-		// 	WeaponStatus[RDProp_ChargeF + 1],
-		// 	WeaponStatus[RDProp_ChargeF + 2],
-		// 	WeaponStatus[RDProp_ChargeF + 3],
-		// 	A_GetDamageTier(),
-		// 	WeaponStatus[RDProp_Heat]);
+	// 	Console.Printf("\c[Green]RPM:\c- %i \c[Green]Damage:\c- %i, %i, %i, %i \c[Green]Tier:\c- %i \c[Green]Heat:\c- %i",
+	// 		WeaponStatus[RDProp_Rpm],
+	// 		WeaponStatus[RDProp_ChargeF],
+	// 		WeaponStatus[RDProp_ChargeF + 1],
+	// 		WeaponStatus[RDProp_ChargeF + 2],
+	// 		WeaponStatus[RDProp_ChargeF + 3],
+	// 		A_GetDamageTier(),
+	// 		WeaponStatus[RDProp_Heat]);
 
-		Super.DoEffect();
-	}
+	// 	Super.DoEffect();
+	// }
 
 	override bool AddSpareWeapon(actor newowner) { return AddSpareWeaponRegular(newowner); }
 	override HDWeapon GetSpareWeapon(actor newowner , bool reverse, bool doselect) { return GetSpareWeaponRegular(newowner, reverse, doselect); }
