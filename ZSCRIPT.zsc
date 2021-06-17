@@ -672,7 +672,7 @@ class RedlineRayImpact : HDActor
 				for (int i = 0; i < 30; ++i)
 				{
 					double pitch = frandom(-85.0, 85.0);
-					A_SpawnParticle(0xFF1111, SPF_RELATIVE | SPF_FULLBRIGHT, random(10, 20), random(5, 8), random(0, 359), random(0, 4), 0, 0, random(1, 5) * cos(pitch), 0, random(1, 5) * sin(pitch), 0, 0, -0.5);
+					A_SpawnParticle(0xFF1111, SPF_RELATIVE | SPF_FULLBRIGHT, random(10, 20), random(6, 9), random(0, 359), random(0, 4), 0, 0, random(1, 5) * cos(pitch), 0, random(1, 5) * sin(pitch), 0, 0, -0.5);
 				}
 			}
 			Stop;
@@ -683,7 +683,7 @@ class RedlineRaySmoke : Actor
 {
 	override void PostBeginPlay()
 	{
-		if (!random(0, 2))
+		if (!random(0, 4))
 		{
 			A_SpawnItemEx("RedlineRaySmokeParticle");
 		}
@@ -742,7 +742,10 @@ class RedlineRaySmokeParticle : Actor
 			{
 				A_SpawnParticle("FF1111", SPF_RELATIVE | SPF_FULLBRIGHT, 1, ParticleSize, startalphaf: Lifetime / DefaultLifeTime);
 				A_ChangeVelocity(frandom(-0.10, 0.10), frandom(-0.10, 0.10), frandom(-0.10, 0.10), CVF_RELATIVE);
-				if (Lifetime-- < 0) Destroy();
+				if (Lifetime-- < 0)
+				{
+					Destroy();
+				}
 			}
 			Loop;
 	}
