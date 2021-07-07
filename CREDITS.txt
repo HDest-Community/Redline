@@ -6,9 +6,9 @@ Sprites:
  + Pickup sprite and reshade by Mor'ladim.
 
 Sounds:
-- Fallout (Interplay/Bethesda)
- + https://gamebanana.com/sounds/35140
- + https://gamebanana.com/sounds/33348
+- Fallout (Interplay/Bethesda), compiled by Magmacow
+ + https://gamebanana.com/sounds/35140 (Reloading)
+ + https://gamebanana.com/sounds/33348 (Fire/Bolt)
 - Hill Climb Racing 2 (Fingersoft)
  + Engine rev
 
