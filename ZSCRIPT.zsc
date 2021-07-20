@@ -606,11 +606,7 @@ class RedlineRandom : IdleDummy
 					return;
 				}
 
-				wpn.special = special;
-				for (int i = 0; i < 5; ++i)
-				{
-					wpn.Args[i] = Args[i];
-				}
+				HDF.TransferSpecials(self, wpn);
 				if (!random(0, 3))
 				{
 					wpn.WeaponStatus[wpn.RDProp_Flags] |= wpn.RDF_HeatSink;
