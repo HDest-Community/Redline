@@ -448,7 +448,7 @@ class HDRedline : HDCellWeapon
 				A_RailAttack(ChargeDamage, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 4.0, 0, "RedlineRaySmoke");
 				
 				A_CheckOverheat();
-				invoker.WeaponStatus[RDProp_Heat] += int(ChargeDamage / (NoEngine ? 4 : 3) * frandom(0.925, 1.05));
+				invoker.WeaponStatus[RDProp_Heat] += int((ChargeDamage / 3) * frandom(0.925, 1.05));
 
 				A_AlertMonsters();
 				A_MuzzleClimb(0, 0, -0.2, -0.8, -frandom(0.5, 0.9), -frandom(0.5, 0.9), -frandom(0.5, 0.9), -frandom(0.5, 0.9));
