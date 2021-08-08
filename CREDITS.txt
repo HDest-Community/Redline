@@ -9,8 +9,6 @@ Sounds:
 - Fallout (Interplay/Bethesda), compiled by Magmacow
  + https://gamebanana.com/sounds/35140 (Reloading)
  + https://gamebanana.com/sounds/33348 (Fire/Bolt)
-- Hill Climb Racing 2 (Fingersoft)
- + Engine rev
 
 Feedback:
 - Massive thanks to Eric and Daerik for their feedback on all of the iterations.
