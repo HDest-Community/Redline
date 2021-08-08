@@ -516,7 +516,7 @@ class RedlineRaySegment : Actor
 		{
 			A_SpawnParticle(0xFF3333, SPF_RELATIVE | SPF_FULLBRIGHT, random(25, 40), frandom(0.5, 1.5), 0,random(-10, 10), 0, 0,
 				frandom(-0.20, 0.20), frandom(-0.20, 0.20), frandom(-0.20, 0.20),
-				frandom(-0.01, 0.05), frandom(-0.05, 0.05), frandom(-0.01, 0.01));
+				frandom(-0.02, 0.02), frandom(-0.02, 0.02), frandom(-0.02, 0.02));
 		}
 
 		Super.PostBeginPlay();
