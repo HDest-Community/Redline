@@ -8,10 +8,9 @@
 	- `scope`: Self-explanatory.
 	- `sink`: Heat sink for faster heat dissipation
 	- `cap`: Capacitor for landing an extra shot.
-	- `resonator`: Replaces the internal engine with a simpler resonator. (In other words, brings back the old Redline.)
+	- `noengine`: Removes the engine. In other words, brings back the old Redline.
 
 ### Mechanics
 ---
-- Firing the weapon generates heat and RPM. If you get enough heat, the gun will overheat and will become unusable until the heat dissipates. More damage means more heat.
-- Pulling the bolt and holding it will rev up the engine. The more RPM, the more damage that is stored in the charge. The damage boost is tier-based. Each notch on the RPM meter increases the tier once it's reached.
-- If the resonator is used, only the heat mechanic applies since there is no engine.
+- Firing the weapon generates heat. If you get enough heat, the gun will overheat and will become unusable until the heat dissipates.
+- Pulling the bolt and holding it will rev up the engine. The more RPM, the more shots you can fire off before having to rev again.
