@@ -385,7 +385,7 @@ class HDRedline : HDCellWeapon
 				if (invoker.WeaponStatus[RDProp_Battery] > 0 && invoker.WeaponStatus[RDProp_Charges] < MaxCharges + (invoker.WeaponStatus[RDProp_Flags] & RDF_Capacitor ? 1 : 0))
 				{
 					A_StartSound("Redline/Charge", 9, pitch: 0.80);
-					invoker.WeaponStatus[RDProp_Charges]++;
+					invoker.WeaponStatus[RDProp_Charges] = invoker.WeaponStatus[RDProp_Flags] & RDF_Capacitor ? 2 : 1;
 					invoker.WeaponStatus[RDProp_Battery]--;
 				}
 			}
