@@ -346,16 +346,15 @@ class HDRedline : HDCellWeapon
 				invoker.HasFired = false;
 			}
 			#### D 3 Offset(7, 44);
-			#### E 2 Offset(8, 46);
-			#### E 1 Offset(8, 46)
+			#### E 3 Offset(8, 46);
+			#### E 0
 			{
 				A_WeaponBusy(false);
-				A_WeaponReady(WRF_NOFIRE);
+				A_Refire("AltHold");
 			}
-			#### E 0 A_Refire("AltHold");
 			Goto AltHoldEnd;
 		AltHold:
-			#### E 1 A_WeaponReady(WRF_NOFIRE);
+			#### E 1;
 			#### E 1
 			{
 				A_ClearRefire();
@@ -390,12 +389,7 @@ class HDRedline : HDCellWeapon
 				}
 			}
 			#### C 2;
-			#### B 2 Offset(2, 36)
-			{
-				A_Refire("AltHold");
-				A_WeaponReady(WRF_NOFIRE);
-				A_WeaponBusy(false);
-			}
+			#### B 2 Offset(2, 36);
 			Goto Ready;
 		LoadChamber:
 			#### E 1 Offset(2, 36) A_ClearRefire();
