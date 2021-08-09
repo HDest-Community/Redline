@@ -300,7 +300,7 @@ class HDRedline : HDCellWeapon
 				A_Light0();
 				A_StartSound("Redline/Fire", CHAN_WEAPON);
 
-				int dmg = random(90, 120);
+				int dmg = random(110, 140);
 				A_RailAttack(dmg, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 10.0, 0, "RedlineRaySegment");
 				
 				A_CheckOverheat();
