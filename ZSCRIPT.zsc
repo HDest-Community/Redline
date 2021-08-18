@@ -153,10 +153,10 @@ class HDRedline : HDCellWeapon
 
 		if (hdw.WeaponStatus[RDProp_Flags] & RDF_Overheated)
 		{
-			sb.DrawString(sb.pNewSmallFont, "OVERHEAT", (-24, -25), sb.DI_TEXT_ALIGN_RIGHT | sb.DI_SCREEN_CENTER_BOTTOM, Font.CR_RED, scale: (0.5, 0.5));
+			sb.DrawString(sb.pNewSmallFont, "OVERHEAT", (-22, -24), sb.DI_TEXT_ALIGN_RIGHT | sb.DI_SCREEN_CENTER_BOTTOM, Font.CR_RED, scale: (0.5, 0.5));
 		}
 
-		int yoff = -4;
+		int yoff = -6;
 
 		int BatteryCharge = AceCore.GetRealBatteryCharge(hdw.WeaponStatus[RDProp_Battery], 1.5, true);
 		if (BatteryCharge > 0)
