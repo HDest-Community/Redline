@@ -340,7 +340,7 @@ class HDRedline : HDCellWeapon
 					A_StartSound("Redline/Eject", 9, pitch: 0.7);
 					Actor Mag = HDMagAmmo.SpawnMag(self, "HDBattery", 0);
 					Mag.Angle = Angle;
-					Mag.A_ChangeVelocity(-0.75, -1.5, 3.5, CVF_RELATIVE);
+					Mag.A_ChangeVelocity(-0.75, -1.0, 2.5, CVF_RELATIVE);
 					invoker.WeaponStatus[RDProp_Battery] = -1;
 				}
 				invoker.HasFired = false;
