@@ -301,7 +301,7 @@ class HDRedline : HDCellWeapon
 				A_StartSound("Redline/Fire", CHAN_WEAPON);
 
 				int dmg = random(110, 140);
-				A_RailAttack(dmg, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, 12600, 0, 10.0, 0, "RedlineRaySegment", player.crouchfactor < 1.0 ? 1.1 : 2);
+				A_RailAttack(dmg, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, HDCONST_ONEMETRE * 300, 0, 10.0, 0, "RedlineRaySegment", player.crouchfactor < 1.0 ? 1.1 : 2);
 				
 				A_CheckOverheat();
 				invoker.WeaponStatus[RDProp_Heat] += int((dmg / 3) * frandom(0.925, 1.05));
