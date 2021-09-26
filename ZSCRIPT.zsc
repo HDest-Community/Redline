@@ -486,6 +486,7 @@ class RedlineRayImpact : HDActor
 		+BLOODLESSIMPACT
 		+FORCERADIUSDMG
 		+NOBLOOD
+		+HITTRACER
 		Decal "RedlineScorch";
 		DamageType "Hot";
 	}
@@ -497,6 +498,7 @@ class RedlineRayImpact : HDActor
 			{
 				A_Explode(random(15, 30), 20, XF_HURTSOURCE, false);
 				A_StartSound("Redline/Impact");
+				A_GiveInventory('Heat', random(300, 600), AAPTR_TRACER);
 
 				for (int i = 0; i < 30; ++i)
 				{
