@@ -108,7 +108,7 @@ class HDRedline : HDCellWeapon
 	override void InitializeWepStats(bool idfa)
 	{
 		WeaponStatus[RDProp_Battery] = 20;
-		WeaponStatus[RDProp_Charges] = WeaponStatus[RDProp_Flags] & RDF_Capacitor ? 2 : 1;
+		WeaponStatus[RDProp_Charges] = WeaponStatus[RDProp_Flags] & RDF_Capacitor ? 3 : 2;
 	}
 	override void LoadoutConfigure(string input)
 	{
