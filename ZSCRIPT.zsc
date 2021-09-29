@@ -422,7 +422,7 @@ class HDRedline : HDCellWeapon
 						let Battery = HDMagAmmo(FindInventory("HDBattery"));
 						if (Battery && Battery.Amount > 0)
 						{
-							invoker.WeaponStatus[RDProp_Battery] = int(Battery.TakeMag(true) * 1.5);
+							invoker.WeaponStatus[RDProp_Battery] = Battery.TakeMag(true);
 							A_StartSound("Redline/CellIn", 10);
 						}
 						break;
