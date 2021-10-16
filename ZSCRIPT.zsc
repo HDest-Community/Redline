@@ -80,21 +80,6 @@ class HDRedline : HDCellWeapon
 		Super.Tick();
 	}
 
-	override void DetachFromOwner()
-	{
-		owner.A_StopSound(100);
-		Super.DetachFromOwner();
-	}
-
-	override void OnDestroy()
-	{
-		if (owner)
-		{
-			owner.A_StopSound(100);
-		}
-		Super.OnDestroy();
-	}
-
 	override bool AddSpareWeapon(actor newowner) { return AddSpareWeaponRegular(newowner); }
 	override HDWeapon GetSpareWeapon(actor newowner , bool reverse, bool doselect) { return GetSpareWeaponRegular(newowner, reverse, doselect); }
 	override double GunMass() { return WeaponStatus[RDProp_Battery] >= 0 ? 12 : 11; }
