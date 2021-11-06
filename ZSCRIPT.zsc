@@ -251,6 +251,7 @@ class HDRedline : HDCellWeapon
 			return false;
 		}
 
+		
 		return !trg.InStateSequence(trg.CurState, trg.FindState('falldown')) && AbsAngle(plr.angle, plr.AngleTo(trg)) < 60;
 	}
 
@@ -299,7 +300,7 @@ class HDRedline : HDCellWeapon
 						if (invoker.WeaponStatus[RDProp_Flags] & RDF_LockOn)
 						{	
 							invoker.LockonTrigger++;
-							if (invoker.LockonTrigger > 3)
+							if (invoker.LockonTrigger > 6)
 							{
 								FLineTraceData data;
 								LineTrace(angle, HDCONST_ONEMETRE * 300, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
