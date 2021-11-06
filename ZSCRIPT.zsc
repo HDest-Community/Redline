@@ -37,7 +37,8 @@ class HDRedline : HDCellWeapon
 		RDF_HeatSink = 1,
 		RDF_Scope = 2,
 		RDF_Capacitor = 4,
-		RDF_Overheated = 16,
+		RDF_LockOn = 8,
+		RDF_Overheated = 16
 	}
 
 	enum RedlineProperties
@@ -278,37 +279,49 @@ class HDRedline : HDCellWeapon
 						return;
 					}
 
-					if (charges > 0)
+					if (charges > 0 && !invoker.HasFired)
 					{
-						invoker.LockonTrigger++;
-						if (invoker.LockonTrigger > 4)
-						{
-							FLineTraceData data;
-							LineTrace(angle, HDCONST_ONEMETRE * 300, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
-
-							if (IsValidTarget(invoker, data.HitActor))
+						if (invoker.WeaponStatus[RDProp_Flags] & RDF_LockOn)
+						{	
+							invoker.LockonTrigger++;
+							if (invoker.LockonTrigger > 3)
 							{
-								int size = invoker.LockedTargets.Size();
-								if (size < charges && invoker.LockedTargets.Find(data.HitActor) == size)
+								FLineTraceData data;
+								LineTrace(angle, HDCONST_ONEMETRE * 300, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
+
+								if (IsValidTarget(invoker, data.HitActor))
 								{
-									invoker.LockedTargets.Push(data.HitActor);
-									RedlineLockon ind = RedlineLockon(Spawn('RedlineLockon', data.HitActor.pos));
-									ind.master = invoker;
-									ind.target = data.HitActor;
-									A_StartSound("Redline/LockOn", 7);
+									int size = invoker.LockedTargets.Size();
+									if (size < charges && invoker.LockedTargets.Find(data.HitActor) == size)
+									{
+										invoker.LockedTargets.Push(data.HitActor);
+										RedlineLockon ind = RedlineLockon(Spawn('RedlineLockon', data.HitActor.pos));
+										ind.master = invoker;
+										ind.target = data.HitActor;
+										A_StartSound("Redline/LockOn", 7);
+									}
 								}
 							}
+						}
+						else
+						{
+							invoker.HasFired = true;
+							SetWeaponState('Fire');
+							return;
 						}
 					}
 					A_WeaponReady(WRF_ALL | WRF_NOFIRE);
 				}
 				else
 				{
-					if (charges > 0 && (invoker.LockedTargets.Size() > 0 || invoker.LockOnTrigger > 0 && invoker.LockonTrigger < 10))
+					if (charges > 0 && invoker.WeaponStatus[RDProp_Flags] & RDF_Lockon && invoker.LockonTrigger > 0)
 					{
-						invoker.HasFired = false;
 						SetWeaponState('Fire');
 						return;
+					}
+					else
+					{
+						invoker.HasFired = false;
 					}
 					A_WeaponReady(WRF_ALL | WRF_NOPRIMARY);
 				}

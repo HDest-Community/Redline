@@ -8,8 +8,10 @@
 	- `scope`: Self-explanatory.
 	- `sink`: Heat sink for faster heat dissipation
 	- `cap`: Capacitor for landing an extra shot.
+	- `lockon`: Lock-on capabilities.
 
 ### Mechanics
 ---
 - Firing the weapon generates heat. If you get enough heat, the gun will overheat and will become unusable until the heat dissipates.
 - Holding fire turns on lock-on mode after a few milliseconds. Hovering over an enemy will mark them. Letting go of the trigger will automatically fire in their direction. The number of enemies you can lock onto depends on the number of charges. There is an angle limit and you cannot do 360 noscopes with this.
+- The autoaiming feature isn't too smart. Sometimes it will fail to fire at enemies that are behind a low wall. Use freefire against those.
