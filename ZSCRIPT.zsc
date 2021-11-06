@@ -150,7 +150,8 @@ class HDRedline : HDCellWeapon
 	{
 		string capStr = WeaponStatus[RDProp_Flags] & RDF_Capacitor ? "high-capacity " : "";
 		string sinkStr = WeaponStatus[RDProp_Flags] & RDF_HeatSink ? "heat-sinked " : "";
-		return String.Format("You got the %s%sRDL-N3 'Redline' bolt-action thermal lance.", capStr, sinkStr);
+		string lockStr = WeaponStatus[RDProp_Flags] & RDF_LockOn ? " with lock-on capabilities" : "";
+		return String.Format("You got the %s%sRDL-N3 'Redline' bolt-action thermal lance%s.", capStr, sinkStr, lockStr);
 	}
 
 	override void DrawHUDStuff(HDStatusBar sb, HDWeapon hdw, HDPlayerPawn hpl)
@@ -252,7 +253,7 @@ class HDRedline : HDCellWeapon
 		}
 
 		
-		return !trg.InStateSequence(trg.CurState, trg.FindState('falldown')) && AbsAngle(plr.angle, plr.AngleTo(trg)) < 60;
+		return !trg.InStateSequence(trg.CurState, trg.FindState('falldown')) && AbsAngle(plr.angle, plr.AngleTo(trg)) < 60 && AceCore.PitchTo(plr, trg, 2) < 50;
 	}
 
 	const MaxCharges = 2;
@@ -330,7 +331,7 @@ class HDRedline : HDCellWeapon
 				}
 				else
 				{
-					if (charges > 0 && invoker.WeaponStatus[RDProp_Flags] & RDF_Lockon && invoker.LockonTrigger > 0)
+					if (charges > 0 && invoker.WeaponStatus[RDProp_Flags] & RDF_LockOn && invoker.LockonTrigger > 0)
 					{
 						invoker.LockonTrigger = 0;
 						SetWeaponState('Fire');
