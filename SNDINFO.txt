@@ -14,3 +14,5 @@ Redline/Eject RDEJECT
 Redline/Overload RDOVERLD
 Redline/Charge RDBOLTCH
 $alias Redline/Overheated Redline/Charge
+
+Redline/LockOn RDLLOCK
