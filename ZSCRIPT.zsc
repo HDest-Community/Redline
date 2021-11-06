@@ -77,17 +77,32 @@ class HDRedline : HDCellWeapon
 			WeaponStatus[RDProp_Heat] = 0;
 		}
 
-		for (int i = 0; i < LockedTargets.Size();)
+		if (!owner)
 		{
-			if (!IsValidTarget(self, LockedTargets[i]))
+			LockonTrigger = 0;
+			LockedTargets.Clear();
+		}
+		else
+		{
+			for (int i = 0; i < LockedTargets.Size();)
 			{
-				LockedTargets.Delete(i);
-				continue;
+				if (!IsValidTarget(self, LockedTargets[i]))
+				{
+					LockedTargets.Delete(i);
+					continue;
+				}
+				++i;
 			}
-			++i;
 		}
 
 		Super.Tick();
+	}
+
+	override void PreTravelled()
+	{
+		LockonTrigger = 0;
+		LockedTargets.Clear();
+		Super.PreTravelled();
 	}
 
 	override bool AddSpareWeapon(actor newowner) { return AddSpareWeaponRegular(newowner); }
@@ -236,7 +251,7 @@ class HDRedline : HDCellWeapon
 			return false;
 		}
 
-		return AbsAngle(plr.angle, plr.AngleTo(trg)) < 60;
+		return !trg.InStateSequence(trg.CurState, trg.FindState('falldown')) && AbsAngle(plr.angle, plr.AngleTo(trg)) < 60;
 	}
 
 	const MaxCharges = 2;
@@ -316,6 +331,7 @@ class HDRedline : HDCellWeapon
 				{
 					if (charges > 0 && invoker.WeaponStatus[RDProp_Flags] & RDF_Lockon && invoker.LockonTrigger > 0)
 					{
+						invoker.LockonTrigger = 0;
 						SetWeaponState('Fire');
 						return;
 					}
@@ -337,6 +353,7 @@ class HDRedline : HDCellWeapon
 			RDNG A 0;
 			#### A 0
 			{
+				invoker.LockonTrigger = 0;
 				invoker.LockedTargets.Clear();
 			}
 			Goto Deselect0Big;
@@ -346,7 +363,6 @@ class HDRedline : HDCellWeapon
 		Fire:
 			#### F 1 Bright Offset(0, 42)
 			{
-				invoker.LockonTrigger = 0;
 				A_Light0();
 				A_StartSound("Redline/Fire", CHAN_WEAPON);
 
