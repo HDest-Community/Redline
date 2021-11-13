@@ -644,7 +644,7 @@ class RedlineLockon : Actor
 					Destroy();
 					return;
 				}
-				Warp(target, target.radius, 0, target.height - target.height / 4, target.AngleTo(wpn.owner), flags: WARPF_ABSOLUTEANGLE);
+				Warp(target, target.radius, 0, target.height - target.height / 4, target.AngleTo(wpn.owner), flags: WARPF_ABSOLUTEANGLE | WARPF_NOCHECKPOSITION);
 				alpha = frandom(0.8, 1.2);
 			}
 			Loop;
