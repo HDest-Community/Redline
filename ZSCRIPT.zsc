@@ -599,6 +599,11 @@ class RedlineRaySegment : Actor
 				frandom(-0.20, 0.20), frandom(-0.20, 0.20), frandom(-0.20, 0.20),
 				frandom(-0.02, 0.02), frandom(-0.02, 0.02), frandom(-0.02, 0.02));
 		}
+		if (target)
+		{
+			double dist = Distance3D(target);
+			alpha += 0.002 * dist;
+		}
 
 		Super.PostBeginPlay();
 	}
@@ -615,10 +620,7 @@ class RedlineRaySegment : Actor
 	States
 	{
 		Spawn:
-			RDLR A 1 Bright
-			{
-				A_FadeOut(0.1);
-			}
+			RDLR A 1 Bright A_FadeOut(0.1);
 			Loop;
 	}
 }
