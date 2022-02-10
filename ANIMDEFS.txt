@@ -1,1 +1,0 @@
-cameratexture REDLNCAM 96 56

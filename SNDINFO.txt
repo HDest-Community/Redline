@@ -1,18 +1,14 @@
 Redline/Fire RDLNFIRE
-$pitchset Redline/Fire 0.9;
 
 Redline/Impact RDLNHIT
 $limit Redline/Impact 0
 
-Redline/BoltBack RDBOLTBK
-
-Redline/BoltFwd RDBOLTFW
-
-Redline/CellIn RDCLLIN
-Redline/CellOut RDCLLOUT
+Redline/Unlock RDBOLTBK
 Redline/Eject RDEJECT
-Redline/Overload RDOVERLD
+Redline/CellOut RDCLLOUT
+Redline/CellIn RDCLLIN
 Redline/Charge RDBOLTCH
-$alias Redline/Overheated Redline/Charge
+$pitchset Redline/Charge 0.7
 
+Redline/Overload RDOVERLD
 Redline/LockOn RDLLOCK
