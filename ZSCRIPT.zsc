@@ -317,12 +317,13 @@ class HDRedline : HDCellWeapon
 					A_Face(invoker.LockedTargets[size - 1], 0, 0, flags: FAF_MIDDLE);
 				}
 
-				int dmg = random(110, 140);
-				A_RailAttack(dmg, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact", 0, 0, HDCONST_ONEMETRE * 300, 0, 10.0, 0, "RedlineRaySegment", player.crouchfactor < 1.0 ? 1.1 : 2);
-				
 				A_CheckOverheat();
 				bool overheated = invoker.WeaponStatus[RDProp_Flags] & RDF_Overheated;
-				invoker.WeaponStatus[RDProp_Heat] += int((dmg / 4) * frandom(0.925, 1.05) * (overheated ? 1.5 : 1.0));
+
+				int dmg = int(random(110, 140) * (overheated ? 1.5 : 1.0));
+				A_RailAttack(dmg, 0, false, "", "", RGF_NOPIERCING | RGF_NORANDOMPUFFZ | RGF_SILENT, 0, "RedlineRayImpact"..(overheated ? "Overheated" : ""), 0, 0, HDCONST_ONEMETRE * 300, 0, 10.0, 0, "RedlineRaySegment"..(overheated ? "Overheated" : ""), player.crouchfactor < 1.0 ? 1.1 : 2);
+				
+				invoker.WeaponStatus[RDProp_Heat] += int((dmg / 4) * frandom(0.925, 1.05));
 				invoker.WeaponStatus[RDProp_Battery] -= overheated ? 2 : 1;
 				if (invoker.WeaponStatus[RDProp_Battery] < 0)
 				{
@@ -460,6 +461,11 @@ class RedlineRandom : IdleDummy
 
 class RedlineRayImpact : HDActor
 {
+	protected virtual void ImmolateTarget()
+	{
+		A_GiveInventory('Heat', random(150, 400), AAPTR_TRACER);
+	}
+
 	Default
 	{
 		+NODAMAGETHRUST
@@ -483,7 +489,7 @@ class RedlineRayImpact : HDActor
 			{
 				A_Explode(random(15, 30), 20, XF_HURTSOURCE, false);
 				A_StartSound("Redline/Impact");
-				A_GiveInventory('Heat', random(150, 400), AAPTR_TRACER);
+				ImmolateTarget();
 
 				for (int i = 0; i < 30; ++i)
 				{
@@ -492,6 +498,14 @@ class RedlineRayImpact : HDActor
 				}
 			}
 			Stop;
+	}
+}
+
+class RedlineRayImpactOverheated : RedlineRayImpact
+{
+	override void ImmolateTarget()
+	{
+		A_GiveInventory('Heat', random(300, 550), AAPTR_TRACER);
 	}
 }
 
@@ -522,6 +536,14 @@ class RedlineRaySegment : Actor
 		Spawn:
 			RDLR A 1 Bright A_FadeOut(0.1);
 			Loop;
+	}
+}
+
+class RedlineRaySegmentOverheated : RedlineRaySegment
+{
+	Default
+	{
+		Alpha 3.0;
 	}
 }
 
