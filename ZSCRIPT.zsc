@@ -112,9 +112,10 @@ class HDRedline : HDCellWeapon
 
 	override string GetHelpText()
 	{
-		return WEPHELP_FIRE.."  Shoot (hold to lock-on)\n"
+		string lockStr = WeaponStatus[RDProp_Flags] & RDF_LockOn ? " (hold to lock-on)" : "";
+		return String.Format(WEPHELP_FIRE.."  Shoot%s\n"
 		..WEPHELP_RELOADRELOAD
-		..WEPHELP_UNLOADUNLOAD;
+		..WEPHELP_UNLOADUNLOAD, lockStr);
 	}
 
 	override string PickupMessage()
