@@ -210,7 +210,7 @@ class HDRedline : HDCellWeapon
 		}
 
 		let plr = HDPlayerPawn(wpn.owner);
-		if (!trg || !trg.bISMONSTER || !trg.bSHOOTABLE || trg.bINVULNERABLE || trg.bFRIENDLY || trg.bBOSS || trg.Health <= 0 || trg.bCORPSE || !plr || plr.player.ReadyWeapon != wpn || !plr.CheckSight(trg, SF_SEEPASTSHOOTABLELINES | SF_IGNOREVISIBILITY))
+		if (!trg || !trg.bISMONSTER || !trg.bSHOOTABLE || trg.bINVULNERABLE || trg.bFRIENDLY || trg.bBOSS || trg.Health <= 0 || trg.bCORPSE || !plr || plr.Distance3D(trg) > HDCONST_ONEMETRE * 50 || plr.player.ReadyWeapon != wpn || !plr.CheckSight(trg, SF_SEEPASTSHOOTABLELINES | SF_IGNOREVISIBILITY))
 		{
 			return false;
 		}
@@ -256,7 +256,7 @@ class HDRedline : HDCellWeapon
 							if (invoker.LockonTrigger > 6)
 							{
 								FLineTraceData data;
-								LineTrace(angle, HDCONST_ONEMETRE * 300, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
+								LineTrace(angle, HDCONST_ONEMETRE * 60, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
 
 								if (IsValidTarget(invoker, data.HitActor))
 								{
