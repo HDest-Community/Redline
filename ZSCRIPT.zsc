@@ -267,6 +267,15 @@ class HDRedline : HDCellWeapon
 										RedlineLockon ind = RedlineLockon(Spawn('RedlineLockon', data.HitActor.pos));
 										ind.master = invoker;
 										ind.target = data.HitActor;
+
+										double maxSize = max(data.HitActor.Height, data.HitActor.Radius * 2);
+										double minSize = min(data.HitActor.Height, data.HitActor.Radius * 2);
+										if (minSize > 30)
+										{
+											double extraScale = maxSize / minSize;
+											ind.Scale += (extraScale, extraScale);
+										}
+
 										A_StartSound("Redline/LockOn", 7);
 									}
 								}
