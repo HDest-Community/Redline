@@ -315,7 +315,8 @@ class HDRedline : HDCellWeapon
 				int size = invoker.LockedTargets.Size();
 				if (size > 0)
 				{
-					A_Face(invoker.LockedTargets[size - 1], 0, 0, flags: FAF_MIDDLE);
+					Actor trgt = invoker.LockedTargets[size - 1];
+					A_Face(trgt, 0, 0, flags: FAF_MIDDLE, z_ofs: trgt.height < 20 ? -(trgt.height / 2) : 0);
 				}
 
 				A_CheckOverheat();
