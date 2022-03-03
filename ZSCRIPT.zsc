@@ -534,7 +534,7 @@ class RedlineRaySegment : Actor
 
 	Default
 	{
-		RenderStyle "Add";
+		Renderstyle "Add";
 		+NOINTERACTION
 		+NOBLOCKMAP
 		+BRIGHT
