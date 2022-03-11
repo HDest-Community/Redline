@@ -268,11 +268,10 @@ class HDRedline : HDCellWeapon
 										ind.master = invoker;
 										ind.target = data.HitActor;
 
-										double maxSize = max(data.HitActor.Height, data.HitActor.Radius * 2);
 										double minSize = min(data.HitActor.Height, data.HitActor.Radius * 2);
 										if (minSize > 30)
 										{
-											double extraScale = maxSize / minSize;
+											double extraScale = min(3.0, minSize / 30.0);
 											ind.Scale += (extraScale, extraScale);
 										}
 
