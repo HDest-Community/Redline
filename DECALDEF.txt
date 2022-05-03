@@ -1,6 +1,6 @@
 decal RedlineScorchBlack
 {
-	pic RDLSCR1
+	pic ACESCR1
 	shade "00 00 00"
 	x-scale 0.08
 	y-scale 0.08
@@ -10,7 +10,7 @@ decal RedlineScorchBlack
 
 decal RedlineScorch
 {
-	pic RDLSCR1
+	pic ACESCR1
 	shade "FF 11 11"
 	x-scale 0.05
 	y-scale 0.05
