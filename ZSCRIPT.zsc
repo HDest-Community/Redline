@@ -12,7 +12,7 @@ class RedlineHandler : EventHandler
 		switch (e.Replacement.GetClassName())
 		{
 			case 'PlasmaReplaces':
-				if (random[redrand]() <= 16) // [Ace] It's fuckin' RARE!
+				if (random[redrand]() <= AceCore.GetScaledChance(4, 16, acl_spawnscale_min, acl_spawnscale_max)) // [Ace] It's fuckin' RARE!
 				{
 					e.Replacement = "RedlineRandom";
 				}
@@ -114,6 +114,7 @@ class HDRedline : HDCellWeapon
 	{
 		string lockStr = WeaponStatus[RDProp_Flags] & RDF_LockOn ? " (hold to lock-on)" : "";
 		return String.Format(WEPHELP_FIRE.."  Shoot%s\n"
+		..(WeaponStatus[RDProp_Flags] & RDF_LockOn ? WEPHELP_ALTFIRE.."  Cancel lockon\n" : "")
 		..WEPHELP_RELOADRELOAD
 		..WEPHELP_UNLOADUNLOAD, lockStr);
 	}
@@ -252,6 +253,12 @@ class HDRedline : HDCellWeapon
 					{
 						if (invoker.WeaponStatus[RDProp_Flags] & RDF_LockOn)
 						{	
+							if (PressingAltfire())
+							{
+								invoker.LockonTrigger = 0;
+								A_ClearLockon();
+								return;
+							}
 							invoker.LockonTrigger++;
 							if (invoker.LockonTrigger > 6)
 							{
