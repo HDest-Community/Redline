@@ -263,7 +263,7 @@ class HDRedline : HDCellWeapon
 							if (invoker.LockonTrigger > 6)
 							{
 								FLineTraceData data;
-								LineTrace(angle, HDCONST_ONEMETRE * 60, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, height - HDCONST_CROWNTOEYES, data: data);
+								LineTrace(angle, HDCONST_ONEMETRE * 60, pitch, TRF_NOSKY | TRF_THRUHITSCAN | TRF_THRUBLOCK, PlayerPawn(self).ViewHeight, data: data);
 
 								if (IsValidTarget(invoker, data.HitActor))
 								{
