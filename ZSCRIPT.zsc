@@ -164,14 +164,23 @@ class HDRedline : HDCellWeapon
 
 		if (scopeview)
 		{
-			sb.SetClipRect(-65 + bob.x, 11 + bob.y, 130, 130, sb.DI_SCREEN_CENTER);
-			sb.DrawImage("RDLNSCBL", (0, 76) + bob, sb.DI_SCREEN_CENTER | sb.DI_ITEM_CENTER, scale: (1.25, 1.25));
-			TexMan.SetCameraToTexture(hpc, "HDXHCAM3", 4);
-			sb.DrawCircle(TexMan.CheckForTexture('HDXHCAM3', TexMan.Type_Any), (0, 76) + bob * 3, 0.5, usePixelRatio: true);
+			//fixed courtesy of TooFewSecrets from Discord
+		
+			int scaledyoffset=76;
+			int scaledwidth=91;
+			int cx,cy,cw,ch;
+			[cx,cy,cw,ch]=screen.GetClipRect();
+			sb.SetClipRect(-45.5 + bob.x, 30.5 + bob.y, scaledwidth, scaledwidth, sb.DI_SCREEN_CENTER);
+			
+			texman.setcameratotexture(hpc, "HDXCAM_ZM66", 5);
+			let cam  = texman.CheckForTexture("HDXCAM_ZM66",TexMan.Type_Any);
+			sb.DrawCircle(cam,(0,ScaledYOffset)+bob*3,.11,usePixelRatio:true);
 
-			sb.DrawImage("RDLNSCOP", (0, 76) + bob, sb.DI_SCREEN_CENTER | sb.DI_ITEM_CENTER, scale: (1.25, 1.25));
-
-			sb.ClearClipRect();
+			sb.DrawImage("HDXCAM_ZM66", (0, scaledyoffset) + bob, sb.DI_SCREEN_CENTER |  sb.DI_ITEM_CENTER, scale: (.5, .5));
+			sb.DrawImage("SCOPHOLE", (0, scaledyoffset) + bob * 5, sb.DI_SCREEN_CENTER | sb.DI_ITEM_CENTER, scale: (1.5, 1.5));
+			Screen.SetClipRect(cx, cy, cw, ch);
+			sb.DrawImage("RDLNSCOP", (0, scaledyoffset) + bob, sb.DI_SCREEN_CENTER | sb.DI_ITEM_CENTER, scale: (1.25, 1.25));
+			
 		}
 	}
 
